@@ -17,6 +17,7 @@ const Board: React.FC = () => {
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.onClick(restartGame);
     }
+    console.log(winner, squares)
   },[winner, squares]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const Board: React.FC = () => {
   const restartGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
+    window.Telegram.WebApp.MainButton.hide();
   };
 
   const handleClick = (index: number) => {
