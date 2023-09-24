@@ -1,0 +1,20 @@
+.square {
+    width: 100%;
+    height: 100%;
+    // width: 60px;
+    // height: 60px;
+    // border: 1px solid black;
+    border: 0;
+    color: inherit;
+    background-color: inherit;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:first-child {
+        border-right: 1px solid gray;
+    }
+    &:last-child {
+        border-left: 1px solid gray;
+    }
+}
