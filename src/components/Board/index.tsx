@@ -12,7 +12,14 @@ const Board: React.FC = () => {
   useEffect(() => {
     window.Telegram.WebApp.MainButton.show();
     window.Telegram.WebApp.MainButton.text = 'Main button!';
-  },[])
+  },[]);
+
+  const makeMove = (index: number) => {
+    const squaresCopy = squares.slice();
+    squaresCopy[index] = 'O';
+    setSquares(squaresCopy);
+    setIsXNext(true);
+  };
 
   useEffect(() => {
     if (!isXNext && !calculateWinner(squares) && !squares.includes(null)) {
@@ -23,19 +30,14 @@ const Board: React.FC = () => {
       const move = findWinningMove(squares, 'O') || findWinningMove(squares, 'X') || randomMove(squares);
       if (move !== null) makeMove(move);
     }
-  }, [squares, isXNext]);
+  }, [squares, isXNext, makeMove]);
 
   const restartGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
   };
 
-  const makeMove = (index: number) => {
-    const squaresCopy = squares.slice();
-    squaresCopy[index] = 'O';
-    setSquares(squaresCopy);
-    setIsXNext(true);
-  };
+
 
   const handleClick = (index: number) => {
     if (squares[index] || calculateWinner(squares)) return;
