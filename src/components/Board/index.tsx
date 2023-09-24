@@ -10,6 +10,11 @@ const Board: React.FC = () => {
   const [isXNext, setIsXNext] = useState<boolean>(true);
 
   useEffect(() => {
+    window.Telegram.WebApp.MainButton.show();
+    window.Telegram.WebApp.MainButton.text = 'Main button!';
+  },[])
+
+  useEffect(() => {
     if (!isXNext && !calculateWinner(squares) && !squares.includes(null)) {
       return;  // If it's a draw, don't let the computer make a move
     }
