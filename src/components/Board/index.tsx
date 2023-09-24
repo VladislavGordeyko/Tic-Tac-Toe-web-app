@@ -17,7 +17,6 @@ const Board: React.FC = () => {
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.onClick(restartGame);
     }
-    console.log(winner, squares)
   },[winner, squares]);
 
   useEffect(() => {
@@ -53,10 +52,10 @@ const Board: React.FC = () => {
     }
   }, [squares, isXNext, makeMove]);
 
-  const restartGame = () => {
+  const restartGame = ()  => {
+    window.Telegram.WebApp.MainButton.hide();
     setSquares(Array(9).fill(null));
     setIsXNext(true);
-    window.Telegram.WebApp.MainButton.hide();
   };
 
   const handleClick = (index: number) => {
@@ -70,6 +69,14 @@ const Board: React.FC = () => {
   const renderSquare = (index: number) => (
     <Square value={squares[index]} onClick={() => handleClick(index)} />
   );
+
+  // const getTgButton = () => {
+  //   console.log(window.Telegram.WebApp.MainButton.isProgressVisible);
+  // }
+
+  // const closeTgButton = () => {
+  //   window.Telegram.WebApp.MainButton.hide();
+  // }
 
   return (
     <div className={styles.board}>
@@ -89,7 +96,9 @@ const Board: React.FC = () => {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      {/* {(winner || !squares.includes(null)) && (
+      {/* <button onClick={getTgButton}>get telegram button state</button>
+      <button onClick={closeTgButton}>close Tg button</button> */}
+      {/* {window && window.Telegram.WebApp.MainButton.isVisible && (
         <button onClick={restartGame} className={styles['board__restart-button']}>Restart Game</button>
       )} */}
     </div>
