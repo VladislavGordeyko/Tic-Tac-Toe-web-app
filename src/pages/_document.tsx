@@ -5,10 +5,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
-        {/* <script async 
-        src="https://telegram.org/js/telegram-web-app.js"
-        ></script> */}
+        <Script 
+          src="https://telegram.org/js/telegram-web-app.js"
+          strategy="beforeInteractive" 
+         />
       </Head>
       <body>
         <Main />

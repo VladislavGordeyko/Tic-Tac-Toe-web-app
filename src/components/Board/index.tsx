@@ -8,11 +8,31 @@ import styles from './board.module.scss';
 const Board: React.FC = () => {
   const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState<boolean>(true);
+  const [winner, setWinner] = useState(calculateWinner(squares));
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
-    window.Telegram.WebApp.MainButton.show();
-    window.Telegram.WebApp.MainButton.text = 'Main button!';
-  },[]);
+    if (winner || !squares.includes(null)) {
+      window.Telegram.WebApp.MainButton.show();
+      window.Telegram.WebApp.MainButton.text = 'Restart Game';
+      window.Telegram.WebApp.MainButton.onClick(restartGame);
+    }
+  },[winner, squares]);
+
+  useEffect(() => {
+    if (winner) {
+      setStatus(`Winner: ${winner}`);
+    } else if (!squares.includes(null)) {
+      setStatus('Draw!');
+    } else {
+      setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
+    }
+  }, [squares, winner]);
+
+  useEffect(() => {
+    setWinner(calculateWinner(squares))
+  }, [squares]);
+
 
   const makeMove = (index: number) => {
     const squaresCopy = squares.slice();
@@ -37,8 +57,6 @@ const Board: React.FC = () => {
     setIsXNext(true);
   };
 
-
-
   const handleClick = (index: number) => {
     if (squares[index] || calculateWinner(squares)) return;
     const squaresCopy = squares.slice();
@@ -50,16 +68,6 @@ const Board: React.FC = () => {
   const renderSquare = (index: number) => (
     <Square value={squares[index]} onClick={() => handleClick(index)} />
   );
-
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = `Winner: ${winner}`;
-  } else if (!squares.includes(null)) {
-    status = 'Draw!';
-  } else {
-    status = `Next player: ${isXNext ? 'X' : 'O'}`;
-  }
 
   return (
     <div className={styles.board}>
@@ -79,9 +87,9 @@ const Board: React.FC = () => {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      {(winner || !squares.includes(null)) && (
+      {/* {(winner || !squares.includes(null)) && (
         <button onClick={restartGame} className={styles['board__restart-button']}>Restart Game</button>
-      )}
+      )} */}
     </div>
   );
 };
