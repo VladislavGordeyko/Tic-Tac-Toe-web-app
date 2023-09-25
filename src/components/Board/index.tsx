@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { calculateWinner, findWinningMove, randomMove } from './utils';
+import React, { useState, useEffect, useCallback } from 'react';
+import { calculateWinner, findWinningMove, randomMove, bestMove } from './utils';
 import { SquareValue } from '../Square/models';
 import Square from '../Square';
 import styles from './board.module.scss';
@@ -8,27 +8,49 @@ import styles from './board.module.scss';
 const Board: React.FC = () => {
   const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState<boolean>(true);
+  const [winner, setWinner] = useState(calculateWinner(squares));
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
-    if (!isXNext && !calculateWinner(squares) && !squares.includes(null)) {
-      return;  // If it's a draw, don't let the computer make a move
+    if (winner || !squares.includes(null)) {
+      window.Telegram.WebApp.MainButton.text = 'Restart Game';
+      window.Telegram.WebApp.MainButton.show();
+      window.Telegram.WebApp.MainButton.onClick(restartGame);
     }
+  },[winner, squares]);
 
-    if (!isXNext && !calculateWinner(squares)) {
-      const move = findWinningMove(squares, 'O') || findWinningMove(squares, 'X') || randomMove(squares);
-      if (move !== null) makeMove(move);
+  useEffect(() => {
+    if (winner) {
+      setStatus(`Winner: ${winner}`);
+    } else if (!squares.includes(null)) {
+      setStatus('Draw!');
+    } else {
+      setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
     }
-  }, [squares, isXNext]);
+  }, [squares, winner]);
 
-  const restartGame = () => {
-    setSquares(Array(9).fill(null));
-    setIsXNext(true);
-  };
+  useEffect(() => {
+    setWinner(calculateWinner(squares))
+  }, [squares]);
+
 
   const makeMove = (index: number) => {
     const squaresCopy = squares.slice();
     squaresCopy[index] = 'O';
     setSquares(squaresCopy);
+    setIsXNext(true);
+  };
+
+  useEffect(() => {
+    if (!isXNext && !calculateWinner(squares)) {
+      const move = bestMove(squares, 'O');
+      if (move !== -1) makeMove(move);
+    }
+  }, [squares, isXNext]);
+
+  const restartGame = ()  => {
+    window.Telegram.WebApp.MainButton.hide();
+    setSquares(Array(9).fill(null));
     setIsXNext(true);
   };
 
@@ -44,15 +66,14 @@ const Board: React.FC = () => {
     <Square value={squares[index]} onClick={() => handleClick(index)} />
   );
 
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = `Winner: ${winner}`;
-  } else if (!squares.includes(null)) {
-    status = 'Draw!';
-  } else {
-    status = `Next player: ${isXNext ? 'X' : 'O'}`;
-  }
+  // const getTgButton = useCallback(() => {
+  //   console.log(window.Telegram.WebApp.MainButton.isProgressVisible)
+  // },[window]);
+  
+
+  // const closeTgButton = () => {
+  //   window.Telegram.WebApp.MainButton.hide();
+  // }
 
   return (
     <div className={styles.board}>
@@ -72,9 +93,11 @@ const Board: React.FC = () => {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      {(winner || !squares.includes(null)) && (
-        <button onClick={restartGame} className={styles['board__restart-button']}>Restart Game</button>
-      )}
+      {/* <button onClick={getTgButton}>get telegram button state</button>
+      <button onClick={closeTgButton}>close Tg button</button> */}
+      {/* {(winner || !squares.includes(null)) && (
+        <button onClick={restartGame} className="restart-button">Restart Game</button>
+      )} */}
     </div>
   );
 };

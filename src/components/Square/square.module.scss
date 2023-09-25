@@ -1,20 +1,58 @@
+.line {
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 3px;
+    top: 50%;
+    left: 0;
+    transform-origin: center;
+}
+  
+.line1 {
+    transform: rotate(45deg);
+}
+  
+.line2 {
+    transform: rotate(-45deg);
+}
+  
+
+.circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    stroke: black;
+    stroke-width: 2;
+    fill: none;
+}
+
 .square {
     width: 100%;
     height: 100%;
-    // width: 60px;
-    // height: 60px;
-    // border: 1px solid black;
     border: 0;
     color: inherit;
     background-color: inherit;
-    font-size: 50px;
     font-weight: bold;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
 
     &:first-child {
         border-right: 1px solid gray;
     }
     &:last-child {
         border-left: 1px solid gray;
+    }
+
+    &__container {
+        top: 10%;
+        width: 80%;
+        height: 80%;
+        left: 10%;
+        overflow: hidden;
+        position: absolute;
     }
 }
