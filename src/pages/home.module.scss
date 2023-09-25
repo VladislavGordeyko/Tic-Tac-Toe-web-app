@@ -4,4 +4,18 @@
     align-items: center;
     height: 100vh;
     font-family: Arial, sans-serif;
+    flex-direction: column;
+}
+
+.colors {
+    display: flex;
+}
+
+.color {
+    margin: 10px;
+    color: var(--tg-theme-bg-color);
+    background-color: var(--tg-theme-text-color);
+    width: 10px;
+    height: 10px;
+    border-width: 5px;
 }

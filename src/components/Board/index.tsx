@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { calculateWinner, findWinningMove, randomMove, bestMove } from './utils';
+import React, { useState, useEffect } from 'react';
+import { calculateWinner, bestMove } from './utils';
 import { SquareValue } from '../Square/models';
-import Square from '../Square';
+import Rows from '../Row';
 import styles from './board.module.scss';
 
 const Board: React.FC = () => {
@@ -33,7 +33,6 @@ const Board: React.FC = () => {
     setWinner(calculateWinner(squares))
   }, [squares]);
 
-
   const makeMove = (index: number) => {
     const squaresCopy = squares.slice();
     squaresCopy[index] = 'O';
@@ -63,42 +62,10 @@ const Board: React.FC = () => {
     setIsXNext(false);
   };
 
-  const renderSquare = (index: number) => (
-    <Square value={squares[index]} onClick={() => handleClick(index)} />
-  );
-
-  // const getTgButton = useCallback(() => {
-  //   console.log(window.Telegram.WebApp.MainButton.isProgressVisible)
-  // },[window]);
-  
-
-  // const closeTgButton = () => {
-  //   window.Telegram.WebApp.MainButton.hide();
-  // }
-
   return (
     <div className={styles.board}>
       <div className={styles['board__status']}>{status}</div>
-      <div className={`${styles['board__board-row']} ${styles['board__board-row--top']}`}>
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className={styles['board__board-row']}>
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className={`${styles['board__board-row']} ${styles['board__board-row--bottom']}`}>
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-      {/* <button onClick={getTgButton}>get telegram button state</button>
-      <button onClick={closeTgButton}>close Tg button</button> */}
-      {/* {(winner || !squares.includes(null)) && (
-        <button onClick={restartGame} className="restart-button">Restart Game</button>
-      )} */}
+      <Rows squares={squares} onClick={handleClick} />
     </div>
   );
 };
