@@ -12,7 +12,7 @@ const Board: React.FC = () => {
   const [status, setStatus] = useState('');
 
   useEffect(() => {
-    if (winner || !squares.includes(null)) {
+    if (winner || !squares.includes(null) && !window.Telegram.WebApp.MainButton.isVisible) {
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.show();
       window.Telegram.WebApp.MainButton.onClick(restartGame);
