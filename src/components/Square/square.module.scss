@@ -1,6 +1,6 @@
 .line {
     position: absolute;
-    background: black;
+    background: var(--tg-theme-bg-color, black);
     width: 100%;
     height: 3px;
     top: 50%;
@@ -24,7 +24,7 @@
     width: 100%;
     height: 100%;
     transform-origin: center;
-    stroke: black;
+    stroke: var(--tg-theme-bg-color, black);
     stroke-width: 2;
     fill: none;
 }
