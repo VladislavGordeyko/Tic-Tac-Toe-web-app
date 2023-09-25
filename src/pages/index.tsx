@@ -20,9 +20,12 @@ const Home = () => {
     <main className={styles.home}>
       <div className={styles.colors}>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-bg-color)'}}/>
-        <div className={styles.color}/>
-        <div className={styles.color}/>
-        <div className={styles.color}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-text-color)'}}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-hint-color)'}}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-link-color)'}}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-color)'}}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-text-color)'}}/>
+        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
       </div>
       
       <Board />
