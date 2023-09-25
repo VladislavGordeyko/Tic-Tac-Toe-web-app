@@ -13,7 +13,6 @@ const Board: React.FC = () => {
 
   useEffect(() => {
     if (winner || !squares.includes(null)) {
-      console.log('inside of condition');
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.show();
       window.Telegram.WebApp.MainButton.onClick(restartGame);
