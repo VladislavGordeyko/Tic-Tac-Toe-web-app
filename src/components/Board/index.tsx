@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { calculateWinner, findWinningMove, randomMove } from './utils';
+import React, { useState, useEffect, useCallback } from 'react';
+import { calculateWinner, findWinningMove, randomMove, bestMove } from './utils';
 import { SquareValue } from '../Square/models';
 import Square from '../Square';
 import styles from './board.module.scss';
@@ -13,8 +13,8 @@ const Board: React.FC = () => {
 
   useEffect(() => {
     if (winner || !squares.includes(null)) {
-      window.Telegram.WebApp.MainButton.show();
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
+      window.Telegram.WebApp.MainButton.show();
       window.Telegram.WebApp.MainButton.onClick(restartGame);
     }
   },[winner, squares]);
@@ -42,15 +42,11 @@ const Board: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isXNext && !calculateWinner(squares) && !squares.includes(null)) {
-      return;  // If it's a draw, don't let the computer make a move
-    }
-
     if (!isXNext && !calculateWinner(squares)) {
-      const move = findWinningMove(squares, 'O') || findWinningMove(squares, 'X') || randomMove(squares);
-      if (move !== null) makeMove(move);
+      const move = bestMove(squares, 'O');
+      if (move !== -1) makeMove(move);
     }
-  }, [squares, isXNext, makeMove]);
+  }, [squares, isXNext]);
 
   const restartGame = ()  => {
     window.Telegram.WebApp.MainButton.hide();
@@ -70,9 +66,10 @@ const Board: React.FC = () => {
     <Square value={squares[index]} onClick={() => handleClick(index)} />
   );
 
-  // const getTgButton = () => {
-  //   console.log(window.Telegram.WebApp.MainButton.isProgressVisible);
-  // }
+  // const getTgButton = useCallback(() => {
+  //   console.log(window.Telegram.WebApp.MainButton.isProgressVisible)
+  // },[window]);
+  
 
   // const closeTgButton = () => {
   //   window.Telegram.WebApp.MainButton.hide();
@@ -98,8 +95,8 @@ const Board: React.FC = () => {
       </div>
       {/* <button onClick={getTgButton}>get telegram button state</button>
       <button onClick={closeTgButton}>close Tg button</button> */}
-      {/* {window && window.Telegram.WebApp.MainButton.isVisible && (
-        <button onClick={restartGame} className={styles['board__restart-button']}>Restart Game</button>
+      {/* {(winner || !squares.includes(null)) && (
+        <button onClick={restartGame} className="restart-button">Restart Game</button>
       )} */}
     </div>
   );

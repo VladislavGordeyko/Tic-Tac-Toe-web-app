@@ -40,4 +40,51 @@ export const findWinningMove = (squares: SquareValue[], player: SquareValue) => 
     }
     return null;
 };
-  
+
+export const  minimax = (squares: SquareValue[], player: SquareValue): number => {
+  const winner = calculateWinner(squares);
+  if (winner === 'O') return +10;
+  if (winner === 'X') return -10;
+
+  if (!squares.includes(null)) return 0; // Draw
+
+  let moves = [];
+  for (let i = 0; i < squares.length; i++) {
+    if (!squares[i]) {
+      const squaresCopy = squares.slice();
+      squaresCopy[i] = player;
+
+      if (player === 'O') {
+        const g = minimax(squaresCopy, 'X');
+        moves.push(g - 1); // The farther from root, the less preferred
+      } else {
+        const g = minimax(squaresCopy, 'O');
+        moves.push(g + 1);
+      }
+    }
+  }
+  if (player === 'O') {
+    return Math.max(...moves);
+  } else {
+    return Math.min(...moves);
+  }
+}
+
+export const bestMove = (squares: SquareValue[], player: SquareValue): number => {
+  let bestScore = -Infinity;
+  let move = -1;
+
+  for (let i = 0; i < squares.length; i++) {
+    if (!squares[i]) {
+      const squaresCopy = squares.slice();
+      squaresCopy[i] = player;
+      const score = minimax(squaresCopy, 'X');
+
+      if (score > bestScore) {
+        bestScore = score;
+        move = i;
+      }
+    }
+  }
+  return move;
+}
