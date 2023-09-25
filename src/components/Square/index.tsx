@@ -8,9 +8,7 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
   const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
-    if (!squareRef.current) return;
-
-    if (value === 'X') {
+    if (value === 'X' && squareRef.current) {
       const tl = gsap.timeline();
       tl.fromTo(squareRef.current.children[0], 
         { scaleX: 0 }, 
@@ -31,14 +29,16 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
     } else if (value === 'O' && circleRef.current) {
       const circumference = 2 * Math.PI * 40;
       gsap.fromTo(circleRef.current, 
-        { strokeDasharray: `${circumference} ${circumference}`,
-         strokeDashoffset: circumference 
+        { 
+          strokeDasharray: `${circumference} ${circumference}`,
+          strokeDashoffset: circumference 
         },
-          { strokeDashoffset: 0, 
-            duration: 1,
-            ease: "power4.inOut",
-          }
-          );
+        { 
+          strokeDashoffset: 0, 
+          duration: 1,
+          ease: "power4.inOut",
+        }
+      );
     }
   }, [value]);
 
@@ -48,21 +48,20 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
     className={`${styles.square} ${value ? value === 'X' ? 'X' : 'O' : ''}`}
     onClick={onClick}
     >
-      {value === 'X' && (
+      {value === 'X' && 
         <div 
-        ref={squareRef} 
-        className={styles['square__container']}
+          ref={squareRef} 
+          className={styles['square__container']}
         >
-          <div className={`${styles.line} ${styles.line1}`}></div>
-          <div  className={`${styles.line} ${styles.line2}`}></div>
+          <div className={`${styles.line} ${styles.line1}`}/>
+          <div className={`${styles.line} ${styles.line2}`}/>
         </div>
-      )}
-      {value === 'O' && (
-         <svg className={styles.circle} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-         <circle ref={circleRef} cx="50" cy="50" r="40" fill="none" stroke="black" strokeWidth="2" />
-       </svg>
-      )}
-
+      }
+      {value === 'O' && 
+          <svg className={styles.circle} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle ref={circleRef} cx="50" cy="50" r="40" fill="none" stroke="black" strokeWidth="2" />
+        </svg>
+      }
     </button>
   );
 };
