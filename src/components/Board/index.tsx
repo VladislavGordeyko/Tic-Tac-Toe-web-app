@@ -12,8 +12,7 @@ const Board: React.FC = () => {
   const [status, setStatus] = useState('');
 
   useEffect(() => {
-    console.log('in effect', window.Telegram.WebApp.MainButton.isVisible);
-    if (winner || !squares.includes(null) && !window.Telegram.WebApp.MainButton.isVisible) {
+    if (winner || !squares.includes(null)) {
       console.log('inside of condition');
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.show();
@@ -54,6 +53,7 @@ const Board: React.FC = () => {
     window.Telegram.WebApp.MainButton.hide();
     setSquares(Array(9).fill(null));
     setIsXNext(true);
+    setWinner(null);
   };
 
   const handleClick = (index: number) => {
