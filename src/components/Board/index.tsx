@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { calculateWinner, bestMove } from './utils';
 import { SquareValue } from '../Square/models';
-import Rows from '../Row';
+import Rows from '../Rows';
 import styles from './board.module.scss';
 
 const Board: React.FC = () => {
