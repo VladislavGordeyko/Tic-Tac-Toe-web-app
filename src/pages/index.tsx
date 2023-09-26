@@ -16,6 +16,10 @@ const Home = () => {
       // console.log(initDataUnsafe);
      },[]);
 
+     const onSendData = () => {
+      window.Telegram.WebApp.sendData({data: 'Some data'});
+     }
+
 
   return (
     <main className={styles.home}>
@@ -29,6 +33,7 @@ const Home = () => {
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
       </div>
       <Board />
+      <button onClick={onSendData}>Send data</button>
     </main>
   )
 }
