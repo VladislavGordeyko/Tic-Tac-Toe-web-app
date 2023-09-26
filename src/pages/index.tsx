@@ -17,7 +17,7 @@ const Home = () => {
      },[]);
 
      const onSendData = () => {
-      window.Telegram.WebApp.sendData({data: 'Some data'});
+      window.Telegram.WebApp.sendData(JSON.stringify({data: 'Some data'}));
      }
 
 
