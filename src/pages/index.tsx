@@ -7,12 +7,12 @@ import styles from './home.module.scss';
 
 const Home = () => {
   useEffect(() => {
-    console.log(window.Telegram.WebApp.initData);
+      console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
-      const initData = JSON.parse(window.Telegram.WebApp.initData);
+      // const initData = JSON.parse(window.Telegram.WebApp.initData);
       // const initDataUnsafe = JSON.parse(window.Telegram.WebApp.initDataUnsafe);
 
-      console.log(initData);
+      // console.log(initData);
       // console.log(initDataUnsafe);
      },[]);
 
