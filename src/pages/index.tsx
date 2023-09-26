@@ -6,17 +6,13 @@ import styles from './home.module.scss';
 // const inter = Inter({ subsets: ['latin'] })
 
 const Home = () => {
-  // useEffect(() => {
-  //   function setThemeClass() {
-  //     document.documentElement.className = window.Telegram.WebApp.colorScheme;
-  //   }
-  //   window.Telegram.WebApp.onEvent('themeChanged', setThemeClass);
-  //   setThemeClass();
-  // },[]);
+  useEffect(() => {
+      console.log(window.Telegram.WebApp.initData);
+      console.log(window.Telegram.WebApp.initDataUnsafe);
+     },[]);
 
 
   return (
-     // <main className={`${styles.home} ${inter.className}`}>
     <main className={styles.home}>
       <div className={styles.colors}>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-bg-color)'}}/>
@@ -27,7 +23,6 @@ const Home = () => {
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-text-color)'}}/>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
       </div>
-      
       <Board />
     </main>
   )
