@@ -32,25 +32,33 @@ const Home = () => {
       window.Telegram.WebApp.sendData(JSON.stringify({data: 'Some data'}));
      }
 
-     const onSendDataDirectly = () => {
-        const postData = {
-          sessionId: message
-        };
-        fetch('http://localhost:3000', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      })
-      .then(response => response.json())
-      .catch(error => {
-        console.error("There was an error with the POST request:", error);
-      });
-     }
+    //  const onSendDataDirectly = () => {
+    //     const postData = {
+    //       sessionId: message
+    //     };
+    //     fetch('http://localhost:3000', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(postData)
+    //   })
+    //   .then(response => response.json())
+    //   .catch(error => {
+    //     console.error("There was an error with the POST request:", error);
+    //   });
+    //  }
 
      const onChange = (e: React.FormEvent<HTMLInputElement>) => {
         setMessage(e.currentTarget.value);
+     }
+
+     const setPlayersGame = () => {
+      setType('Player')
+     }
+
+     const setBOTGame = () => {
+      setType('BOT')
      }
 
 
@@ -66,13 +74,10 @@ const Home = () => {
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
       </div> */}
       {!type && <div className={styles['home__buttons']}>
-        <Button onClick={() => setType('Player')}  text='Play vs friend'/>
-        <Button onClick={() => setType('BOT')}  text='Play vs Bot'/>
+        <Button onClick={setPlayersGame}  text='Play vs friend'/>
+        <Button onClick={setBOTGame}  text='Play vs Bot'/>
       </div>}
-      {type && <Game type={type} sessionId={session} />}
-      {/* <button onClick={onSendData}>Send data</button> */}
-      <input value={message} onChange={onChange} />
-      <button onClick={onSendDataDirectly}>Send data</button>
+      {type && <Game type={type} session={session} />}
     </main>
   )
 }

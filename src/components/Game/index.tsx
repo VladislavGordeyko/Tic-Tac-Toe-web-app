@@ -1,163 +1,147 @@
 
 import React, { useState, useEffect } from 'react';
 import Board from '../Board';
-import { IGame } from './models';
+import { IGame, IGameStatus } from './models';
 import { bestMove, calculateWinner } from '../Board/utils';
 import { SquareValue } from '../Square/models';
+import useWebSocket from 'react-use-websocket';
 // import { connectSocket } from '@/utils/sockets';
 // import ReconnectingWebSocket from 'reconnecting-websocket';
 
+const SOCKET_URL = 'ws://localhost:3000';
 
-const Game: React.FC<IGame> = ({ type, sessionId }) => {
-    const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
+const onSendDataDirectly = (sessionId: string) => {
+    const postData = {
+      sessionId: sessionId
+    };
+    fetch('http://localhost:3000', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData)
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.error("There was an error with the POST request:", error);
+  });
+ }
+
+
+const Game: React.FC<IGame> = ({ type, session }) => {
+    // const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState<boolean>(true);
-    const [winner, setWinner] = useState(calculateWinner(squares));
+    const [isCurrentMove, setIsCurrentMove] = useState<boolean>(false);
+    // const [winner, setWinner] = useState(calculateWinner(squares));
     const [status, setStatus] = useState('');
-    const [session, setSession] = useState(sessionId);
+    // const [session, setSession] = useState(sessionId);
+    const [sessionId, setSessionId] = useState(session);
+    const [clientId, setClientId] = useState('');
+    const [gameStatus, setGameStatus] = useState<IGameStatus>();
 
-    // const [socket, setSocket] = useState<WebSocket | null>(null);
-    // const [ws, setWs] = useState<ReconnectingWebSocket | null>(null);
-    const [ws, setWs] = useState<WebSocket | null>(null);
+    const { sendMessage, lastMessage, readyState } = useWebSocket(SOCKET_URL, {
+        onOpen: () => {
+            if (sessionId) {
+                sendMessage(JSON.stringify({ type: 'JOIN_SESSION', sessionId, telegramData: window.Telegram.WebApp.initDataUnsafe }));
+            } else {
+                sendMessage(JSON.stringify({ type: 'CREATE_SESSION', telegramData: window.Telegram.WebApp.initDataUnsafe }));
+            }
+        },
+        shouldReconnect: (closeEvent) => true, // Will attempt to reconnect on all close events, such as server shutting down
+    });
 
     useEffect(() => {
-
-        // const socket = new ReconnectingWebSocket('ws://localhost:3000');
-        if (type === 'BOT') return;
-
-        const newWs = new WebSocket('ws://localhost:3000');
-        if (session) {
-            newWs.onopen = () => {
-              newWs.send(JSON.stringify({
-                type: 'JOIN',
-                sessionId: session
-              }));
-            };
-          } else {
-            // If no sessionId prop is provided, we want to create a new session.
-            newWs.onopen = () => {
-              newWs.send(JSON.stringify({
-                type: 'CREATE'
-              }));
-            };
-          }
-    
-          newWs.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+        if (lastMessage) {
+            console.log({lastMessage})
+            const data = JSON.parse(lastMessage.data);
             switch (data.type) {
                 case 'SESSION_CREATED':
-                    console.log('SESSION_CREATED', data);
-                    setSession(data.sessionId);
-                    const onSendDataDirectly = () => {
-                        const postData = {
-                          sessionId: data.sessionId
-                        };
-                        fetch('http://localhost:3000', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(postData)
-                      })
-                      .then(response => response.json())
-                      .catch(error => {
-                        console.error("There was an error with the POST request:", error);
-                      });
-                     }
-                     onSendDataDirectly();
-                    // Handle the creation of a new session
+                    console.log('SESSION_CREATED');
+                    setSessionId(data.sessionId);
+                    setClientId(data.clientId);
+                    setGameStatus(data.gameStatus);
+                    console.log({data});
+
+                    onSendDataDirectly(data.sessionId);
                     break;
-                
-                case 'SESSION_JOINED': 
-                    console.log('SESSION_JOINED');
-                    // Handle joining an existing session
+
+                case 'SESSION_JOINED':
+                    console.log('SESSION_JOINED', {data});
                     break;
-                
+
                 case 'MOVE':
-                    console.log('MOVE', data.square);
-                    setSquares(data.squares);
-                    setIsXNext(!isXNext); // Toggle the player
+                    console.log('MOVE', {data});
+                    setGameStatus(data.gameStatus);
                     break;
-                
+
                 case 'ERROR':
                     console.log('ERROR');
                     break;
-                
+
                 default:
                     break;
             }
-        };
-        
-    
-        setWs(newWs);
+        }
+    }, [lastMessage]);
 
-        return () => {
-          if (newWs) {
-            newWs.close();
-          }
-        };
-      }, []);
-
-    useEffect(() => {
-      if (winner || !squares.includes(null)) {
-        window.Telegram.WebApp.MainButton.text = 'Restart Game';
-        window.Telegram.WebApp.MainButton.show();
-        window.Telegram.WebApp.MainButton.onClick(restartGame);
-      }
-    },[winner, squares]);
+    // useEffect(() => {
+    //   if (winner || !squares.includes(null)) {
+    //     window.Telegram.WebApp.MainButton.text = 'Restart Game';
+    //     window.Telegram.WebApp.MainButton.show();
+    //     window.Telegram.WebApp.MainButton.onClick(restartGame);
+    //   }
+    // },[winner, squares]);
   
     useEffect(() => {
-      if (winner) {
-        setStatus(`Winner: ${winner}`);
-      } else if (!squares.includes(null)) {
+      if (gameStatus?.winner) {
+        setStatus(`Winner: ${gameStatus.winner}`);
+      } else if (!gameStatus?.squares.includes(null)) {
         setStatus('Draw!');
       } else {
         setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
       }
-    }, [squares, winner]);
+    }, [gameStatus]);
   
-    useEffect(() => {
-        setWinner(calculateWinner(squares))
-    }, [squares]);
+    // useEffect(() => {
+    //     setWinner(calculateWinner(squares))
+    // }, [squares]);
   
     const makeMove = (index: number) => {
-        const squaresCopy = squares.slice();
-        squaresCopy[index] = 'O';
-        setSquares(squaresCopy);
+        // const squaresCopy = squares.slice();
+        // squaresCopy[index] = 'O';
+        // setSquares(squaresCopy);
         setIsXNext(true);
     };
   
-    useEffect(() => {
-        if (!isXNext && !calculateWinner(squares) && type === 'BOT') {
-            const move = bestMove(squares, 'O');
-            if (move !== -1) makeMove(move);
-        }
-    }, [squares, isXNext]);
+    // useEffect(() => {
+    //     if (!isXNext && !calculateWinner(squares) && type === 'BOT') {
+    //         const move = bestMove(squares, 'O');
+    //         if (move !== -1) makeMove(move);
+    //     }
+    // }, [squares, isXNext]);
   
-    const restartGame = ()  => {
-        window.Telegram.WebApp.MainButton.hide();
-        setSquares(Array(9).fill(null));
-        setIsXNext(true);
-        setWinner(null);
-    };
+    // const restartGame = ()  => {
+    //     window.Telegram.WebApp.MainButton.hide();
+    //     setSquares(Array(9).fill(null));
+    //     setIsXNext(true);
+    //     setWinner(null);
+    // };
   
     const handleClick = (index: number) => {
-        if (squares[index] || calculateWinner(squares)) return;
-    const squaresCopy = squares.slice();
-    squaresCopy[index] = isXNext ? 'X' : 'O';
-    setSquares(squaresCopy);
-    setIsXNext(!isXNext);
+        if (gameStatus?.squares[index] || gameStatus?.winner) return;
+        // const squaresCopy = squares.slice();
+        // squaresCopy[index] = isXNext ? 'X' : 'O';
+        // setSquares(squaresCopy);
+        // setIsXNext(!isXNext);
+        console.log({clientId}, gameStatus?.currentMoveClientId)
+        if (clientId === gameStatus?.currentMoveClientId && gameStatus.started) {
+            sendMessage(JSON.stringify({ type: 'MOVE', sessionId, clientId, index  }));
+        }
 
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ 
-            type: 'MOVE',
-            sessionId: session,
-            index
-        }));
-    }
     };
 
   return (
-    <Board squares={squares} onClick={handleClick} status={status} />
+    <Board squares={gameStatus?.squares || Array(9).fill(null)} onClick={handleClick} status={gameStatus?.status || ''} />
   );
 };
 
