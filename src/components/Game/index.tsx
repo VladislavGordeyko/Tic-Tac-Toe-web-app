@@ -67,6 +67,7 @@ const Game: React.FC<IGame> = ({ type, session }) => {
 
                 case 'SESSION_JOINED':
                     console.log('SESSION_JOINED', {data});
+                    setGameStatus(data.gameStatus);
                     break;
 
                 case 'MOVE':
