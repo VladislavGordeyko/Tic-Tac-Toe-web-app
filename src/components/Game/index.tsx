@@ -13,6 +13,7 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
     const [isXNext, setIsXNext] = useState<boolean>(true);
     const [winner, setWinner] = useState(calculateWinner(squares));
     const [status, setStatus] = useState('');
+    const [session, setSession] = useState(sessionId);
 
     // const [socket, setSocket] = useState<WebSocket | null>(null);
     // const [ws, setWs] = useState<ReconnectingWebSocket | null>(null);
@@ -24,11 +25,11 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
         if (type === 'BOT') return;
 
         const newWs = new WebSocket('ws://localhost:3000');
-        if (sessionId) {
+        if (session) {
             newWs.onopen = () => {
               newWs.send(JSON.stringify({
                 type: 'JOIN',
-                sessionId
+                sessionId: session
               }));
             };
           } else {
@@ -45,6 +46,7 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
             switch (data.type) {
                 case 'SESSION_CREATED':
                     console.log('SESSION_CREATED', data);
+                    setSession(data.sessionId);
                     const onSendDataDirectly = () => {
                         const postData = {
                           sessionId: data.sessionId
@@ -70,8 +72,8 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
                     // Handle joining an existing session
                     break;
                 
-                case 'UPDATE':
-                    console.log('UPDATE');
+                case 'MOVE':
+                    console.log('MOVE', data.square);
                     setSquares(data.squares);
                     setIsXNext(!isXNext); // Toggle the player
                     break;
@@ -148,7 +150,7 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ 
             type: 'MOVE',
-            sessionId,
+            sessionId: session,
             index
         }));
     }
