@@ -3,6 +3,7 @@ import { SquareValue } from "../Square/models";
 export interface IGame {
     type: 'BOT' | 'Player';
     session?: string;
+    chatId?: string;
 }
 
 export interface IGameStatus {

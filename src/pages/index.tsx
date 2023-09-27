@@ -15,13 +15,21 @@ interface Data extends WebAppInitData {
 const Home = () => {
   const [message, setMessage] = useState('');
   const [session, setSession] = useState<string>();
+  const [chatId, setChatId] = useState<string>();
   const [type, setType] = useState<'BOT' | 'Player'>()
   useEffect(() => {
       console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
       const data = window.Telegram.WebApp.initDataUnsafe.start_param;
       if (data) {
-        setSession(data);
+        const parsedData: {chatId?: string, sessionId?: string} = JSON.parse(data);
+        console.log({parsedData})
+        if (parsedData.chatId) {
+          setChatId(chatId);
+        } else if (parsedData.sessionId) {
+          setSession(parsedData.sessionId);
+        }
+        
         setType('Player')
         console.log('session!', data)
       }
