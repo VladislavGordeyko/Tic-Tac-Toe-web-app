@@ -44,7 +44,24 @@ const Game: React.FC<IGame> = ({ type, sessionId }) => {
             const data = JSON.parse(event.data);
             switch (data.type) {
                 case 'SESSION_CREATED':
-                    console.log('SESSION_CREATED');
+                    console.log('SESSION_CREATED', data);
+                    const onSendDataDirectly = () => {
+                        const postData = {
+                          sessionId: data.sessionId
+                        };
+                        fetch('http://localhost:3000', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(postData)
+                      })
+                      .then(response => response.json())
+                      .catch(error => {
+                        console.error("There was an error with the POST request:", error);
+                      });
+                     }
+                     onSendDataDirectly();
                     // Handle the creation of a new session
                     break;
                 

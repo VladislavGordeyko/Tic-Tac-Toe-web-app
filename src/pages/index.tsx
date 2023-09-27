@@ -19,16 +19,13 @@ const Home = () => {
   useEffect(() => {
       console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
-      const data = window.Telegram.WebApp.initDataUnsafe as Data;
-      if (data.session) {
-        setSession(data.session);
+      const data = window.Telegram.WebApp.initDataUnsafe.start_param;
+      if (data) {
+        setSession(data);
+        setType('Player')
+        console.log('session!', data)
       }
-     
-      // const initData = JSON.parse(window.Telegram.WebApp.initData);
-      // const initDataUnsafe = JSON.parse(window.Telegram.WebApp.initDataUnsafe);
 
-      // console.log(initData);
-      // console.log(initDataUnsafe);
      },[]);
 
      const onSendData = () => {
@@ -36,20 +33,20 @@ const Home = () => {
      }
 
      const onSendDataDirectly = () => {
-      const postData = {
-        sessionId: 'id'
-      };
-      fetch('http://localhost:3000', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(postData)
-    })
-    .then(response => response.json())
-    .catch(error => {
-      console.error("There was an error with the POST request:", error);
-    });
+        const postData = {
+          sessionId: message
+        };
+        fetch('http://localhost:3000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(response => response.json())
+      .catch(error => {
+        console.error("There was an error with the POST request:", error);
+      });
      }
 
      const onChange = (e: React.FormEvent<HTMLInputElement>) => {
