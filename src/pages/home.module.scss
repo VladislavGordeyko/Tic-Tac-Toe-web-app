@@ -3,8 +3,16 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: Arial, sans-serif;
     flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+        gap: 50px;
+    }
 }
 
 .colors {

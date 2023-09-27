@@ -88,6 +88,7 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background-color: inherit;
+  font-family: 'Roboto', sans-serif;
 }
 
 a {

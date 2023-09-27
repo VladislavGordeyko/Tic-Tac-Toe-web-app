@@ -2,14 +2,28 @@
 import React, { useEffect, useState } from 'react';
 import Board from '@/components/Board'
 import styles from './home.module.scss';
+import Button from '@/components/Button';
+import Game from '@/components/Game';
+import { WebAppInitData } from '@twa-dev/types';
 
 // const inter = Inter({ subsets: ['latin'] })
 
+interface Data extends WebAppInitData {
+  session: string;
+}
+
 const Home = () => {
   const [message, setMessage] = useState('');
+  const [session, setSession] = useState<string>();
+  const [type, setType] = useState<'BOT' | 'Player'>()
   useEffect(() => {
       console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
+      const data = window.Telegram.WebApp.initDataUnsafe as Data;
+      if (data.session) {
+        setSession(data.session);
+      }
+     
       // const initData = JSON.parse(window.Telegram.WebApp.initData);
       // const initDataUnsafe = JSON.parse(window.Telegram.WebApp.initDataUnsafe);
 
@@ -23,7 +37,7 @@ const Home = () => {
 
      const onSendDataDirectly = () => {
       const postData = {
-        message
+        sessionId: 'id'
       };
       fetch('http://localhost:3000', {
       method: 'POST',
@@ -45,7 +59,7 @@ const Home = () => {
 
   return (
     <main className={styles.home}>
-      <div className={styles.colors}>
+      {/* <div className={styles.colors}>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-bg-color)'}}/>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-text-color)'}}/>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-hint-color)'}}/>
@@ -53,9 +67,13 @@ const Home = () => {
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-color)'}}/>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-text-color)'}}/>
         <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
-      </div>
-      <Board />
-      <button onClick={onSendData}>Send data</button>
+      </div> */}
+      {!type && <div className={styles['home__buttons']}>
+        <Button onClick={() => setType('Player')}  text='Play vs friend'/>
+        <Button onClick={() => setType('BOT')}  text='Play vs Bot'/>
+      </div>}
+      {type && <Game type={type} sessionId={session} />}
+      {/* <button onClick={onSendData}>Send data</button> */}
       <input value={message} onChange={onChange} />
       <button onClick={onSendDataDirectly}>Send data</button>
     </main>
