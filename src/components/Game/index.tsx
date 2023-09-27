@@ -52,7 +52,7 @@ const Game: React.FC<IGame> = ({ type, session }) => {
 
     useEffect(() => {
         if (lastMessage) {
-            console.log({lastMessage})
+            // console.log({lastMessage})
             const data = JSON.parse(lastMessage.data);
             switch (data.type) {
                 case 'SESSION_CREATED':
@@ -68,6 +68,7 @@ const Game: React.FC<IGame> = ({ type, session }) => {
                 case 'SESSION_JOINED':
                     console.log('SESSION_JOINED', {data});
                     setGameStatus(data.gameStatus);
+                    setClientId(data.clientId)
                     break;
 
                 case 'MOVE':
@@ -134,7 +135,7 @@ const Game: React.FC<IGame> = ({ type, session }) => {
         // squaresCopy[index] = isXNext ? 'X' : 'O';
         // setSquares(squaresCopy);
         // setIsXNext(!isXNext);
-        console.log({clientId}, gameStatus?.currentMoveClientId)
+        // console.log({clientId}, gameStatus?.currentMoveClientId)
         if (clientId === gameStatus?.currentMoveClientId && gameStatus.started) {
             sendMessage(JSON.stringify({ type: 'MOVE', sessionId, clientId, index  }));
         }
