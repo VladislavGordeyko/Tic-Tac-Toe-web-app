@@ -2,30 +2,27 @@
 import React, { useState, useEffect } from 'react';
 import Board from '../Board';
 import { IGame, IGameStatus } from './models';
-import { bestMove, calculateWinner } from '../Board/utils';
-import { SquareValue } from '../Square/models';
 import useWebSocket from 'react-use-websocket';
-// import { connectSocket } from '@/utils/sockets';
-// import ReconnectingWebSocket from 'reconnecting-websocket';
+import { TelegramService } from '@/services/TelegramService';
 
 const SOCKET_URL = 'ws://localhost:3000';
 
-const onSendDataDirectly = (sessionId: string) => {
-    const postData = {
-      sessionId: sessionId
-    };
-    fetch('http://localhost:3000', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(postData)
-  })
-  .then(response => response.json())
-  .catch(error => {
-    console.error("There was an error with the POST request:", error);
-  });
- }
+// const onSendDataDirectly = (sessionId: string) => {
+//     const postData = {
+//       sessionId: sessionId
+//     };
+//     fetch('http://localhost:3000', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(postData)
+//   })
+//   .then(response => response.json())
+//   .catch(error => {
+//     console.error("There was an error with the POST request:", error);
+//   });
+//  }
 
 
 const Game: React.FC<IGame> = ({ type, session }) => {
@@ -51,6 +48,8 @@ const Game: React.FC<IGame> = ({ type, session }) => {
     });
 
     useEffect(() => {
+        const chatID = window.Telegram.WebApp.initDataUnsafe.chat_instance;
+        const tgService = new TelegramService;
         if (lastMessage) {
             // console.log({lastMessage})
             const data = JSON.parse(lastMessage.data);
@@ -62,7 +61,12 @@ const Game: React.FC<IGame> = ({ type, session }) => {
                     setGameStatus(data.gameStatus);
                     console.log({data});
 
-                    onSendDataDirectly(data.sessionId);
+                    if (chatID) {
+                        tgService.sendGameInviteToChat('Test', parseInt(chatID), data.sessionId);
+                    }
+                    
+
+                    // onSendDataDirectly(data.sessionId);
                     break;
 
                 case 'SESSION_JOINED':
@@ -97,15 +101,15 @@ const Game: React.FC<IGame> = ({ type, session }) => {
     //   }
     // },[winner, squares]);
   
-    useEffect(() => {
-      if (gameStatus?.winner) {
-        setStatus(`Winner: ${gameStatus.winner}`);
-      } else if (!gameStatus?.squares.includes(null)) {
-        setStatus('Draw!');
-      } else {
-        setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
-      }
-    }, [gameStatus]);
+    // useEffect(() => {
+    //   if (gameStatus?.winner) {
+    //     setStatus(`Winner: ${gameStatus.winner}`);
+    //   } else if (!gameStatus?.squares.includes(null)) {
+    //     setStatus('Draw!');
+    //   } else {
+    //     setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
+    //   }
+    // }, [gameStatus]);
   
     // useEffect(() => {
     //     setWinner(calculateWinner(squares))
