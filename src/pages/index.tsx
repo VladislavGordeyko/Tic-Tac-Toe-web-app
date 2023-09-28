@@ -18,10 +18,10 @@ const Home = () => {
   const [chatId, setChatId] = useState<string>();
   const [type, setType] = useState<'BOT' | 'Player'>()
   useEffect(() => {
+    console.log(window.Telegram.WebApp)
       console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
-      const data = window.Telegram.WebApp.initDataUnsafe.start_param;
-      // || 'chatId__-1001828521159';
+      const data = window.Telegram.WebApp.initDataUnsafe.start_param || 'chatId__-1001828521159';
       if (data) {
         console.log({data})
         if (data.includes('chatId')) {
