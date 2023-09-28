@@ -22,12 +22,11 @@ const Home = () => {
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
       const data = window.Telegram.WebApp.initDataUnsafe.start_param;
       if (data) {
-        const parsedData: {chatId?: string, sessionId?: string} = JSON.parse(data);
-        console.log({parsedData})
-        if (parsedData.chatId) {
-          setChatId(chatId);
-        } else if (parsedData.sessionId) {
-          setSession(parsedData.sessionId);
+        console.log({data})
+        if (data.includes('chatId')) {
+          setChatId(data.split('__')[1]);
+        } else if (data.includes('sessionId')) {
+          setSession(data.split('__')[1]);
         }
         
         setType('Player')
@@ -85,7 +84,7 @@ const Home = () => {
         <Button onClick={setPlayersGame}  text='Play vs friend'/>
         <Button onClick={setBOTGame}  text='Play vs Bot'/>
       </div>}
-      {type && <Game type={type} session={session} />}
+      {type && <Game type={type} session={session} chatId={chatId}/>}
     </main>
   )
 }
