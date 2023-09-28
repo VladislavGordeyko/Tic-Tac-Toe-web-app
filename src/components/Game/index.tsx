@@ -25,7 +25,7 @@ const SOCKET_URL = 'ws://localhost:3000';
 //  }
 
 
-const Game: React.FC<IGame> = ({ type, session }) => {
+const Game: React.FC<IGame> = ({ type, session, chatId }) => {
     // const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState<boolean>(true);
     const [isCurrentMove, setIsCurrentMove] = useState<boolean>(false);
@@ -48,7 +48,6 @@ const Game: React.FC<IGame> = ({ type, session }) => {
     });
 
     useEffect(() => {
-        const chatID = window.Telegram.WebApp.initDataUnsafe.chat_instance;
         const tgService = new TelegramService;
         if (lastMessage) {
             // console.log({lastMessage})
@@ -61,8 +60,9 @@ const Game: React.FC<IGame> = ({ type, session }) => {
                     setGameStatus(data.gameStatus);
                     console.log({data});
 
-                    if (chatID) {
-                        tgService.sendGameInviteToChat('Test', parseInt(chatID), data.sessionId);
+                    console.log({chatId})
+                    if (chatId) {
+                        tgService.sendGameInviteToChat('Test', chatId, data.sessionId);
                     }
                     
 

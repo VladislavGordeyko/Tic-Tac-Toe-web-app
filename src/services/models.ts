@@ -11,12 +11,12 @@ export interface IApi {
 }
 
 export interface ITelegramService {
-    sendGameInviteToChat(message: string, chatId: number, sessionId: string): Promise<ISendMessageChatData | undefined>;
+    sendGameInviteToChat(message: string, chatId: string, sessionId: string): Promise<ISendMessageChatData | undefined>;
     sendMessage(message: string): Promise<boolean>;
 }
 
 export interface ISendMessageChatData {
     message: string, 
-    chatId: number, 
+    chatId: string, 
     sessionId: string
 }

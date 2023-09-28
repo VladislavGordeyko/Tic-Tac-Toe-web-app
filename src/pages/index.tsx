@@ -21,16 +21,17 @@ const Home = () => {
       console.log(window.Telegram.WebApp.initData);
       console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
       const data = window.Telegram.WebApp.initDataUnsafe.start_param;
+      // || 'chatId__-1001828521159';
       if (data) {
         console.log({data})
         if (data.includes('chatId')) {
           setChatId(data.split('__')[1]);
+          console.log('setting the chatId', data.split('__')[1])
         } else if (data.includes('sessionId')) {
           setSession(data.split('__')[1]);
+          setType('Player');
+          console.log('setting the sessionId', data.split('__')[1])
         }
-        
-        setType('Player')
-        console.log('session!', data)
       }
 
      },[]);

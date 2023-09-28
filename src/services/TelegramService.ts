@@ -7,7 +7,7 @@ const sendGameInvite = `${APIUrl}/inviteToGame`;
 export class TelegramService implements ITelegramService {
     private _api = Api.getInstance();
 
-    public async sendGameInviteToChat(message: string, chatId: number, sessionId: string): Promise<ISendMessageChatData | undefined> {
+    public async sendGameInviteToChat(message: string, chatId: string, sessionId: string): Promise<ISendMessageChatData | undefined> {
         try {
             const result = <IApiResponse<ISendMessageChatData>>await this._api.post(sendGameInvite, {message, chatId, sessionId});
             return result.data;
