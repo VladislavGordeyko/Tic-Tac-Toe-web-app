@@ -34,6 +34,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
         setPlayers(players);
         setSpectators(spectators);
         setGameStatus(gameStatus);
+        setSessionId(data.sessionId);
         console.log({chatId});
         if (chatId) {
           tgService.sendGameInviteToChat('Test', chatId, data.sessionId);
@@ -46,7 +47,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
 
       case 'SESSION_CREATED':
         console.log(data);
-        setSessionId(data.sessionId);
+       
         setIsSessionExist(true);
         setPlayers(data.players);
         setClientId(data.clientId);

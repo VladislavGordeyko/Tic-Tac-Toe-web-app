@@ -1,6 +1,7 @@
-import {  IPlayer } from '@/entities/game';
+import {  IGameStatus, IPlayer } from '@/entities/game';
 
 export interface IPlayersLabel {
     players?: IPlayer[],
     status?: string,
+    currentMoveClientId?: string,
 }

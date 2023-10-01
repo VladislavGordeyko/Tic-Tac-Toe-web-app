@@ -5,10 +5,9 @@ import { IGame } from './models';
 import { IGameStatus } from '@/entities/game';
 import { useWebSocketContext } from '@/context/WebSocketContext';
 import GameStatus from '../GameStatus';
-import { initGameStatus } from './constants';
 
 const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId }) => {
-  const [gameStatus, setGameStatus] = useState<IGameStatus>(initGameStatus);
+  const [gameStatus, setGameStatus] = useState<IGameStatus>();
   const { sendMessage, lastMessage } = useWebSocketContext();
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId 
 
   return (
     <>
-      <GameStatus players={players} status={gameStatus?.status} />
+      <GameStatus players={players} status={gameStatus?.status} currentMoveClientId={gameStatus?.currentMoveClientId} />
       <Board 
         squares={gameStatus?.squares || Array(9).fill(null)} 
         onClick={handleClick} 

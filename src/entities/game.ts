@@ -10,7 +10,6 @@ export interface IGameStatus {
     winner: SquareValue,
     started: boolean,
     status: string,
-    
 }
 
 export interface IPlayer {
