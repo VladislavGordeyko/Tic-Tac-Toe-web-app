@@ -24,7 +24,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       const tgService = new TelegramService;
       switch (data.type) {
       case 'SESSION_JOINED':
-
+        setIsSessionExist(true);
         console.log('SESSION_JOINED', {data});
         
         const gameStatus : IGameStatus = data.gameStatus;
