@@ -8,6 +8,7 @@ export interface IGameStatus {
     isXNext: boolean,
     isFinished: boolean,
     winner: SquareValue,
+    winnerUserName: string,
     started: boolean,
     status: string,
 }

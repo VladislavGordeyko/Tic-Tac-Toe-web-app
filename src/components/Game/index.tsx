@@ -16,8 +16,20 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId 
     }
   }, [gameStatusUpdate]);
 
-  useEffect(() => {
+  const restartGame = ()  => {
+    window.Telegram.WebApp.MainButton.hide();
+    sendMessage(JSON.stringify({ type: 'RESTART_GAME', sessionId }));
+  };
 
+  useEffect(() => {
+    if (gameStatus?.isFinished) {
+      window.Telegram.WebApp.MainButton.text = 'Restart Game';
+      window.Telegram.WebApp.MainButton.show();
+      window.Telegram.WebApp.MainButton.onClick(restartGame);
+    }
+  }, [gameStatus?.isFinished]);
+
+  useEffect(() => {
     if (lastMessage) {
       const data = JSON.parse(lastMessage.data);
       switch (data.type) {
