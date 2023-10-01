@@ -1,4 +1,4 @@
-import { SquareValue } from "../Square/models";
+import { SquareValue } from '../Square/models';
 
 export interface IBoard {
     onClick: (index: number) => void;

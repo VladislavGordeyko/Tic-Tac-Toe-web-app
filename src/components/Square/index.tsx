@@ -15,17 +15,17 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
         { 
           scaleX: 1, 
           duration: 0.5,  
-          ease: "power2.in"
-         }
-        )
+          ease: 'power2.in'
+        }
+      )
         .fromTo(squareRef.current.children[1], 
           { scaleX: 0 }, 
           { 
             scaleX: 1, 
             duration: 0.5,  
-            ease: "power2.inOut" 
+            ease: 'power2.inOut' 
           }
-          );
+        );
     } else if (value === 'O' && circleRef.current) {
       const circumference = 2 * Math.PI * 40;
       gsap.fromTo(circleRef.current, 
@@ -36,7 +36,7 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
         { 
           strokeDashoffset: 0, 
           duration: 1,
-          ease: "power4.inOut",
+          ease: 'power4.inOut',
         }
       );
     }
@@ -44,9 +44,8 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
 
   return (
     <button 
-   
-    className={`${styles.square} ${value ? value === 'X' ? 'X' : 'O' : ''}`}
-    onClick={onClick}
+      className={`${styles.square} ${value ? value === 'X' ? 'X' : 'O' : ''}`}
+      onClick={onClick}
     >
       {value === 'X' && 
         <div 
@@ -59,8 +58,16 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
       }
       {value === 'O' && 
           <svg className={styles.circle} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <circle ref={circleRef} cx="50" cy="50" r="40" fill="none" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
-        </svg>
+            <circle 
+              ref={circleRef} 
+              cx="50" 
+              cy="50" 
+              r="40" 
+              fill="none" 
+              stroke="var(--tg-theme-link-color, black)" 
+              strokeWidth="2"
+            />
+          </svg>
       }
     </button>
   );

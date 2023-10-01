@@ -6,13 +6,51 @@
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
 
+    &__title {
+        font-size: 45px;   
+        flex: .7;
+        align-items: center;
+        display: flex;
+    }
+
     &__buttons {
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 10px;
+        padding: 30px;
         gap: 50px;
+        flex: 1;
     }
+}
+
+.falling-items-container {
+    position: fixed; /* or absolute */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none; /* this ensures that the container doesn't interfere with any user interactions */
+    z-index: -1; /* to ensure it stays behind other content; adjust if necessary */
+}
+
+#falling-elements {
+    position: relative;
+    overflow: hidden;  /* Hide the items that are outside the container */
+}
+
+
+.falling-item {
+    position: absolute;
+    top: 0;
+    left: 100;
+    width: 50px; // adjust as needed
+    height: 50px; // adjust as needed
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    // position: absolute;
+    // font-size: 2em; /* or any size you prefer */
 }
 
 .colors {
@@ -26,4 +64,22 @@
     width: 10px;
     height: 10px;
     border-width: 5px;
+}
+
+
+#rotating-elements {
+    perspective: 1200px; /* Adds some depth perception */
+}
+
+.item {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d; /* Allows 3D rotation */
+    transform: translate(-50%, -50%); /* Center the element */
 }

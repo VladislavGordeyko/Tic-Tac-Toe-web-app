@@ -1,95 +1,68 @@
-// import { Inter } from 'next/font/google'
 import React, { useEffect, useState } from 'react';
-import Board from '@/components/Board'
 import styles from './home.module.scss';
 import Button from '@/components/Button';
-import Game from '@/components/Game';
-import { WebAppInitData } from '@twa-dev/types';
-
-// const inter = Inter({ subsets: ['latin'] })
-
-interface Data extends WebAppInitData {
-  session: string;
-}
+import Lobby from '@/components/Lobby';
+import { GameType } from '@/entities/game';
+import BOTGame from '@/components/Game/BOTGame';
+import { WebSocketProvider } from '@/context/WebSocketContext';
 
 const Home = () => {
-  const [message, setMessage] = useState('');
   const [session, setSession] = useState<string>();
   const [chatId, setChatId] = useState<string>();
-  const [type, setType] = useState<'BOT' | 'Player'>()
-  useEffect(() => {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-      console.log(window.Telegram.WebApp)
-      console.log(window.Telegram.WebApp.initData);
-      console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
-      const data = window.Telegram.WebApp.initDataUnsafe.start_param || 'chatId__-1001828521159';
-      if (data) {
-        console.log({data})
-        if (data.includes('chatId')) {
-          setChatId(data.split('__')[1]);
-          console.log('setting the chatId', data.split('__')[1])
-        } else if (data.includes('sessionId')) {
-          setSession(data.split('__')[1]);
-          setType('Player');
-          console.log('setting the sessionId', data.split('__')[1])
-        }
+  const [gameType, setGameType] = useState<GameType>('Unnasigned');
+
+  useEffect(() => {  
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+    console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
+
+    const data = window.Telegram.WebApp.initDataUnsafe.start_param  || 'chatId__-1001828521159';
+    if (data) {
+      console.log({data});
+      if (data.includes('chatId')) {
+        setChatId(data.split('__')[1]);
+        console.log('setting the chatId', data.split('__')[1]);
+      } else if (data.includes('sessionId')) {
+        setSession(data.split('__')[1]);
+        setGameType('Player');
+        console.log('setting the sessionId', data.split('__')[1]);
       }
+    }
+  }, []);
 
-     },[]);
+  // Animation
+  // useEffect(() => {
+  //   let intervalId: NodeJS.Timeout;
+  //   intervalId = startRandomGeneration();
+  //   return(() => clearInterval(intervalId))
+  // }, []);
 
-     const onSendData = () => {
-      window.Telegram.WebApp.sendData(JSON.stringify({data: 'Some data'}));
-     }
-
-    //  const onSendDataDirectly = () => {
-    //     const postData = {
-    //       sessionId: message
-    //     };
-    //     fetch('http://localhost:3000', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(postData)
-    //   })
-    //   .then(response => response.json())
-    //   .catch(error => {
-    //     console.error("There was an error with the POST request:", error);
-    //   });
-    //  }
-
-     const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setMessage(e.currentTarget.value);
-     }
-
-     const setPlayersGame = () => {
-      setType('Player')
-     }
-
-     const setBOTGame = () => {
-      setType('BOT')
-     }
-
+  const renderMainComponent = () => {
+    switch (gameType) {
+    case 'BOT': return <BOTGame />;
+    case 'Player': return(
+      <WebSocketProvider sessionId={session}>
+        <Lobby 
+          chatId={chatId}
+        />
+      </WebSocketProvider>
+    );
+    default:
+    case 'Unnasigned': return <>
+      <span className={styles['home__title']}>Tic Tac Toe</span>
+      <div className={styles['home__buttons']}>
+        <Button onClick={() => setGameType('Player')} text='Play vs friend'/>
+        <Button onClick={() => setGameType('BOT')} text='Play vs Bot'/>
+      </div>
+    </>;
+    }
+  };
 
   return (
     <main className={styles.home}>
-      {/* <div className={styles.colors}>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-bg-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-text-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-hint-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-link-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-button-text-color)'}}/>
-        <div className={styles.color} style={{backgroundColor: 'var(--tg-theme-secondary-bg-color)'}}/>
-      </div> */}
-      {!type && <div className={styles['home__buttons']}>
-        <Button onClick={setPlayersGame}  text='Play vs friend'/>
-        <Button onClick={setBOTGame}  text='Play vs Bot'/>
-      </div>}
-      {type && <Game type={type} session={session} chatId={chatId}/>}
+      {renderMainComponent()}
     </main>
-  )
-}
+  );
+};
 
 export default Home;
