@@ -30,7 +30,10 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status }) => {
         {players && <>
           {playerCardComponent(players[0])}
             VS
-          {players[1] !== undefined ? players[1].userName : emptyPlayerComponent()}
+          {players[1] !== undefined ? 
+            playerCardComponent(players[1]) : 
+            emptyPlayerComponent()
+          }
         </>}
       </div>
       
