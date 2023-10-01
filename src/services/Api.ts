@@ -21,7 +21,7 @@ export class Api implements IApi {
     });
 
     if (!result.ok) {
-        throw new Error(result.statusText);
+      throw new Error(result.statusText);
     }
    
     return result.json();
@@ -37,7 +37,7 @@ export class Api implements IApi {
     });
         
     if (!result.ok) {
-        throw new Error(result.statusText);
+      throw new Error(result.statusText);
     }
 
     return result.json();

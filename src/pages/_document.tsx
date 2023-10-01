@@ -8,10 +8,10 @@ export default function Document() {
         <Script 
           src="https://telegram.org/js/telegram-web-app.js"
           strategy="beforeInteractive" 
-         />
-          <link 
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-          </link>
+        />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+        </link>
 
       </Head>
       <body>
@@ -19,5 +19,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }

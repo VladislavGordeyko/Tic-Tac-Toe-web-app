@@ -1,4 +1,4 @@
-import { SquareValue } from "../Square/models";
+import { SquareValue } from '../Square/models';
 
 export const calculateWinner = (squares: SquareValue[]): SquareValue => {
   const lines = [
@@ -18,27 +18,27 @@ export const calculateWinner = (squares: SquareValue[]): SquareValue => {
     }
   }
   return null;
-}
+};
 
 export const randomMove = (squares: SquareValue[]) => {
-    const availableSquares = squares.map((square, index) => (square === null ? index : null)).filter(square => square !== null);
-    if (availableSquares.length) {
-      return availableSquares[Math.floor(Math.random() * availableSquares.length)];
-    }
-    return null;
+  const availableSquares = squares.map((square, index) => (square === null ? index : null)).filter(square => square !== null);
+  if (availableSquares.length) {
+    return availableSquares[Math.floor(Math.random() * availableSquares.length)];
+  }
+  return null;
 };
 
 export const findWinningMove = (squares: SquareValue[], player: SquareValue) => {
-    for (let i = 0; i < squares.length; i++) {
-      if (!squares[i]) {
-        const squaresCopy = squares.slice();
-        squaresCopy[i] = player;
-        if (calculateWinner(squaresCopy) === player) {
-          return i;
-        }
+  for (let i = 0; i < squares.length; i++) {
+    if (!squares[i]) {
+      const squaresCopy = squares.slice();
+      squaresCopy[i] = player;
+      if (calculateWinner(squaresCopy) === player) {
+        return i;
       }
     }
-    return null;
+  }
+  return null;
 };
 
 export const  minimax = (squares: SquareValue[], player: SquareValue): number => {
@@ -68,7 +68,7 @@ export const  minimax = (squares: SquareValue[], player: SquareValue): number =>
   } else {
     return Math.min(...moves);
   }
-}
+};
 
 export const bestMove = (squares: SquareValue[], player: SquareValue): number => {
   let bestScore = -Infinity;
@@ -87,4 +87,4 @@ export const bestMove = (squares: SquareValue[], player: SquareValue): number =>
     }
   }
   return move;
-}
+};
