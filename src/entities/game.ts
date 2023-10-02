@@ -16,7 +16,7 @@ export interface IGameStatus {
 export interface IPlayer {
     clientId: string,
     userName?: string,
-    fistName: string,
+    firstName: string,
     lastName: string,
     isSpectator: boolean,
     score: number,
