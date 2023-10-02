@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { ILobby } from './models';
 import Game from '../Game';
-import styles from './lobby.module.scss';
 import { useWebSocketContext } from '@/context/WebSocketContext';
 import { SESSIONNOTEXISTTEXT } from './constants';
-import { IGameStatus, IPlayer } from '@/entities/game';
+import {  IBaseClient, IGameStatus, IPlayer } from '@/entities/game';
 import { TelegramService } from '@/services/TelegramService';
+import Spinner from '../Spinner';
+import styles from './lobby.module.scss';
 
 const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
-  const [isSessionExist, setIsSessionExist] = useState(false);
+  const [isSessionExist, setIsSessionExist] = useState<boolean | undefined>();
   const [sessionId, setSessionId] = useState(session);
   const [players, setPlayers] = useState<IPlayer[]>();
   const [clientId, setClientId] = useState('');
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
+  const [spectators, setSpectators] = useState<IBaseClient[]>();
 
-  const [spectators, setSpectators] = useState<IPlayer[]>();
-
-  const { sendMessage, lastMessage, readyState } = useWebSocketContext();
+  const { lastMessage, isLoading, error } = useWebSocketContext();
 
   useEffect(() => {
     if (lastMessage) {
@@ -29,7 +29,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
         
         const gameStatus : IGameStatus = data.gameStatus;
         const players: IPlayer[] = data.players;
-        const spectators = players.filter(i => i.isSpectator);
+        const spectators : IBaseClient[] = data.spectators;
         
         setPlayers(players);
         setSpectators(spectators);
@@ -82,18 +82,22 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
   //   setMessage(e.currentTarget.value);
   // };
 
+  const getComponentInitComponent = () => {
+    switch (isSessionExist) {
+    case true: return <Game 
+      clientId={clientId}
+      gameStatusUpdate={gameStatus} 
+      sessionId={sessionId} 
+      players={players} 
+    />;
+    case false : return <h1 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h1>;
+    case undefined: return <Spinner />;
+    }
+  };
+
   return (
     <>
-      {isSessionExist ? 
-        <Game 
-          clientId={clientId}
-          gameStatusUpdate={gameStatus} 
-          sessionId={sessionId} 
-          players={players} 
-        />
-        : 
-        <h1 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h1>
-      }
+      {isLoading ? <Spinner /> : error ? <span>Connection Error</span> :  getComponentInitComponent()}
     </>
     
   );

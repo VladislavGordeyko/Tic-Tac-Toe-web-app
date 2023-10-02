@@ -13,12 +13,14 @@ export interface IGameStatus {
     status: string,
 }
 
-export interface IPlayer {
+export interface IBaseClient {
     clientId: string,
     userName?: string,
+    tgId: string,
     firstName: string,
     lastName: string,
-    isSpectator: boolean,
+}
+export interface IPlayer extends IBaseClient {
     score: number,
     isCurrentMove: boolean
 }

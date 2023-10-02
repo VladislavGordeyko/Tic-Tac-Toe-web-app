@@ -42,9 +42,7 @@ const Home = () => {
     case 'BOT': return <BOTGame />;
     case 'Player': return(
       <WebSocketProvider sessionId={session}>
-        <Lobby 
-          chatId={chatId}
-        />
+        <Lobby chatId={chatId} session={session} />
       </WebSocketProvider>
     );
     default:

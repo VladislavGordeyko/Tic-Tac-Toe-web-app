@@ -1,7 +1,7 @@
 import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
 
 export interface IWebSocketProvider {
-    children: React.ReactNode;
+    children: React.ReactNode,
     sessionId?: string
   }
 
@@ -14,7 +14,10 @@ export enum ReadyState {
   }
 
 export interface IWebSocketContext {
-    sendMessage: (message: WebSocketMessage) => void;
-    lastMessage: any;
-    readyState: ReadyState;
+    sendMessage: (message: WebSocketMessage) => void,
+    lastMessage: any,
+    readyState: ReadyState,
+    isLoading: boolean,
+    error: string,
+    isError: boolean,
   }
