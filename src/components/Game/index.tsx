@@ -37,10 +37,11 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId 
         console.log('MOVE', {data});
         setGameStatus(data.gameStatus);
         break;
-        
+
       case 'RESTART_GAME':
         console.log('RESTART_GAME', {data});
         setGameStatus(data.gameStatus);
+        window.Telegram.WebApp.MainButton.hide();
         break;
 
       default:
