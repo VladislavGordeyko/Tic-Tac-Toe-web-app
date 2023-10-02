@@ -13,7 +13,7 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
       /> */}
       <div className={styles['player-image-container__image']}/>
     </div>   
-    <span className={styles['player-card__name']}>{player.userName}</span>
+    <span className={styles['player-card__name']}>{player.userName || player.fistName}</span>
   </div>;
 
   const emptyPlayerComponent = () => 
