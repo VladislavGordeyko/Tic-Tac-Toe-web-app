@@ -5,17 +5,22 @@ import styles from './gameStatus.module.scss';
 
 const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClientId }) => {
   console.log('GAMESTATUS COMPONENT', {players});
-  const playerCardComponent = (player: IPlayer) => <div className={styles['player-card']}>
-    <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
-      {/* <img 
+
+  const playerCardComponent = (player: IPlayer) => {
+    console.log(player, player.userName, player.fistName);
+    
+    return <div className={styles['player-card']}>
+      <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
+        {/* <img 
         className={styles['player-image-container__image']} 
         alt='player-avatar'
         src=''
       /> */}
-      <div className={styles['player-image-container__image']}/>
-    </div>   
-    <span className={styles['player-card__name']}>{player.userName ? player.userName : player.fistName }</span>
-  </div>;
+        <div className={styles['player-image-container__image']}/>
+      </div>   
+      <span className={styles['player-card__name']}>{player.userName ? player.userName : player.fistName }</span>
+    </div>;
+  }; 
 
   const emptyPlayerComponent = () => 
     <div className={styles['player-card']}>
