@@ -7,7 +7,7 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
   console.log('GAMESTATUS COMPONENT', {players});
 
   const playerCardComponent = (player: IPlayer) => {
-    console.log(player, player.userName, player.fistName);
+    console.log(player, player.userName, player.firstName);
     
     return <div className={styles['player-card']}>
       <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
@@ -18,7 +18,7 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
       /> */}
         <div className={styles['player-image-container__image']}/>
       </div>   
-      <span className={styles['player-card__name']}>{player.userName ? player.userName : player.fistName }</span>
+      <span className={styles['player-card__name']}>{player.userName ? player.userName : player.firstName }</span>
     </div>;
   }; 
 
