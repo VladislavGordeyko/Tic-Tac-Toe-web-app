@@ -4,6 +4,7 @@ import { IPlayer } from '@/entities/game';
 import styles from './gameStatus.module.scss';
 
 const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClientId }) => {
+  console.log('GAMESTATUS COMPONENT', {players});
   const playerCardComponent = (player: IPlayer) => <div className={styles['player-card']}>
     <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
       {/* <img 

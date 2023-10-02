@@ -1,7 +1,7 @@
 import { Api } from './Api';
 import { IApiResponse, ISendMessageChatData, ITelegramService } from './models';
 
-const APIUrl = 'http://localhost:3000';
+const APIUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 const sendGameInvite = `${APIUrl}/inviteToGame`;
 const getPhoto = `${APIUrl}/getUserPhoto`;
 
