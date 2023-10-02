@@ -13,7 +13,7 @@ export const useWebSocketContext = () => {
 };
 
 export const WebSocketProvider: React.FC<IWebSocketProvider> = ({ children, sessionId }) => {
-  const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL || 'ws://localhost:3000';
+  const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'ws://localhost:3000';
   const {
     sendMessage,
     lastMessage,
