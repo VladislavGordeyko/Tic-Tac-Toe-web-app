@@ -6,11 +6,12 @@ import styles from './gameStatus.module.scss';
 const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClientId }) => {
   const playerCardComponent = (player: IPlayer) => <div className={styles['player-card']}>
     <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
-      <img 
+      {/* <img 
         className={styles['player-image-container__image']} 
         alt='player-avatar'
-        src='https://fastly.picsum.photos/id/36/200/200.jpg?hmac=VnDu-KXiZmaBJk0XmixLx-JdUPLqVQtLdiqMXOn4LZc'
-      />
+        src=''
+      /> */}
+      <div className={styles['player-image-container__image']}/>
     </div>   
     <span className={styles['player-card__name']}>{player.userName}</span>
   </div>;
