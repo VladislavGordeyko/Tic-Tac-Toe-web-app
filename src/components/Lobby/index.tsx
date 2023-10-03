@@ -27,23 +27,25 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       case 'SESSION_JOINED':
         setIsSessionExist(true);
         console.log('SESSION_JOINED', {data});
+
         
         const gameStatus : IGameStatus = data.gameStatus;
         const players: IPlayer[] = data.players;
         const spectators : IBaseClient[] = data.spectators;
         
-        const isCurrentClientSpectator = spectators.some(i=> i.clientId === clientId);
-        console.log({spectators}, isCurrentClientSpectator, {clientId});
-        setIsSpectator(isCurrentClientSpectator);
+        if (!clientId) {
+          const isCurrentClientSpectator = spectators.some(i=> i.clientId === clientId);
+          console.log({spectators}, isCurrentClientSpectator, {clientId});
+          setIsSpectator(isCurrentClientSpectator);
+          setClientId(data.clientId);
+        }
+       
         
         setPlayers(players);
         setSpectators(spectators);
         setGameStatus(gameStatus);
         setSessionId(data.sessionId);
         console.log({chatId});
-        if (!clientId) {
-          setClientId(data.clientId);
-        }
                    
         break;
 
