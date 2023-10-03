@@ -31,7 +31,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
         const gameStatus : IGameStatus = data.gameStatus;
         const players: IPlayer[] = data.players;
         const spectators : IBaseClient[] = data.spectators;
-        const isCurrentClientSpectator = spectators.some(i=> i.clientId === clientId);
+        const isCurrentClientSpectator = spectators.some(i=> i.clientId === data.clientId);
         setIsSpectator(isCurrentClientSpectator);
         
         setPlayers(players);
