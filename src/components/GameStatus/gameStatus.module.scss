@@ -45,9 +45,17 @@
     justify-content: center;
     align-items: center;
 
+    &--mock {
+        background-color: var(--tg-theme-link-color, #49ACEA);
+    }
+
     &__image {
         height: 50px;
         width: 50px;
+        border-radius: 30px;
+    }
+
+    &__image-mock {
         border-radius: 30px;
         background-color: var(--tg-theme-link-color, #49ACEA);
     }

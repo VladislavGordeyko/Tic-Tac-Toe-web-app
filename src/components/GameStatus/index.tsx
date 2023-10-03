@@ -2,23 +2,33 @@ import React from 'react';
 import { IPlayersLabel } from './models';
 import { IPlayer } from '@/entities/game';
 import styles from './gameStatus.module.scss';
+import Image from 'next/image';
 
 const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClientId }) => {
-  console.log('GAMESTATUS COMPONENT', {players});
-
   const playerCardComponent = (player: IPlayer) => {
-    console.log(player, player.userName, player.firstName);
-    
     return <div className={styles['player-card']}>
       <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
-        {/* <img 
-        className={styles['player-image-container__image']} 
-        alt='player-avatar'
-        src=''
-      /> */}
-        <div className={styles['player-image-container__image']}/>
+        {player.avatar !== '' ? 
+          <Image 
+            className={styles['player-image-container__image']} 
+            alt='player-avatar'
+            height={50}
+            width={50}
+            src='https://api.telegram.org/file/bot6444342475%3AAAEg6SqB9UinVov-57cYFlVopcehQq62re8/photos/file_0.jpg'
+          /> 
+          : <div className={`${styles['player-image-container']} ${styles['player-image-container--mock']}`}>
+            <Image 
+              className={styles['player-image-container__image-mock']} 
+              alt='player-avatar-mock'
+              height={25}
+              width={25}
+              src='/assets/smile.svg'
+            /> 
+          </div> 
+        } 
+        
       </div>   
-      <span className={styles['player-card__name']}>{player.userName ? player.userName : player.firstName }</span>
+      <span className={styles['player-card__name']}>{player.userName}</span>
     </div>;
   }; 
 
@@ -42,8 +52,7 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
             emptyPlayerComponent()
           }
         </>}
-      </div>
-      
+      </div>  
     </div>
   );
 };

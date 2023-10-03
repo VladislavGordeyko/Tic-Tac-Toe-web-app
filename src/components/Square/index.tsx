@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 import { ISquare } from './models';
+import { animateXorO } from './animations';
 import styles from './square.module.scss';
 
 const Square: React.FC<ISquare> = ({ value, onClick }) => {
@@ -8,38 +8,7 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
   const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
-    if (value === 'X' && squareRef.current) {
-      const tl = gsap.timeline();
-      tl.fromTo(squareRef.current.children[0], 
-        { scaleX: 0 }, 
-        { 
-          scaleX: 1, 
-          duration: 0.5,  
-          ease: 'power2.in'
-        }
-      )
-        .fromTo(squareRef.current.children[1], 
-          { scaleX: 0 }, 
-          { 
-            scaleX: 1, 
-            duration: 0.5,  
-            ease: 'power2.inOut' 
-          }
-        );
-    } else if (value === 'O' && circleRef.current) {
-      const circumference = 2 * Math.PI * 40;
-      gsap.fromTo(circleRef.current, 
-        { 
-          strokeDasharray: `${circumference} ${circumference}`,
-          strokeDashoffset: circumference 
-        },
-        { 
-          strokeDashoffset: 0, 
-          duration: 1,
-          ease: 'power4.inOut',
-        }
-      );
-    }
+    animateXorO(value, squareRef, circleRef);
   }, [value]);
 
   return (

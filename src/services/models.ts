@@ -6,8 +6,8 @@ export interface IApiResponse<Type> {
 }
 
 export interface IApi {
-  get(uri: string): Promise<IApiResponse<unknown>>;
-  post(uri: string, body?: unknown): Promise<IApiResponse<unknown>>;
+    get(uri: string): Promise<IApiResponse<unknown>>;
+    post(uri: string, body?: unknown): Promise<IApiResponse<unknown>>;
 }
 
 export interface ITelegramService {

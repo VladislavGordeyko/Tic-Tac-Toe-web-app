@@ -17,8 +17,7 @@ export interface IBaseClient {
     clientId: string,
     userName?: string,
     tgId: string,
-    firstName: string,
-    lastName: string,
+    avatar: string,
 }
 export interface IPlayer extends IBaseClient {
     score: number,

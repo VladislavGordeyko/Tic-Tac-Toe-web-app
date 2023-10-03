@@ -6,7 +6,13 @@ import { IGameStatus } from '@/entities/game';
 import { useWebSocketContext } from '@/context/WebSocketContext';
 import GameStatus from '../GameStatus';
 
-const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId, isSpectator = false }) => {
+const Game: React.FC<IGame> = ({ 
+  sessionId, 
+  players,
+  gameStatusUpdate, 
+  clientId, 
+  isSpectator = false
+}) => {
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
   const { sendMessage, lastMessage } = useWebSocketContext();
 
@@ -34,12 +40,10 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId,
       const data = JSON.parse(lastMessage.data);
       switch (data.type) {
       case 'MOVE':
-        console.log('MOVE', {data});
         setGameStatus(data.gameStatus);
         break;
 
       case 'RESTART_GAME':
-        console.log('RESTART_GAME', {data});
         setGameStatus(data.gameStatus);
         window.Telegram.WebApp.MainButton.hide();
         break;
@@ -60,7 +64,11 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId,
 
   return (
     <>
-      <GameStatus players={players} status={gameStatus?.status} currentMoveClientId={gameStatus?.currentMoveClientId} />
+      <GameStatus 
+        players={players} 
+        status={gameStatus?.status}
+        currentMoveClientId={gameStatus?.currentMoveClientId} 
+      />
       <Board 
         squares={gameStatus?.squares || Array(9).fill(null)} 
         onClick={handleClick} 

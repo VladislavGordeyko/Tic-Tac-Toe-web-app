@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // distDir: 'dist',
-  // output: 'export',
-  // assetPrefix: './'
+  images: {
+    domains: ['api.telegram.org'],
+  },
 };
 
 module.exports = nextConfig;

@@ -1,4 +1,4 @@
-import {  IGameStatus, IPlayer } from '@/entities/game';
+import { IPlayer } from '@/entities/game';
 
 export interface IPlayersLabel {
     players?: IPlayer[],

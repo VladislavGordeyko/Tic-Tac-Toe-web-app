@@ -15,8 +15,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
   const [isSpectator, setIsSpectator] = useState<boolean | undefined>();
   const [clientId, setClientId] = useState('');
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
-  const [spectators, setSpectators] = useState<IBaseClient[]>();
-
+  const [, setSpectators] = useState<IBaseClient[]>();
   const { lastMessage, isLoading, error } = useWebSocketContext();
 
   useEffect(() => {
@@ -26,41 +25,30 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       switch (data.type) {
       case 'SESSION_JOINED':
         setIsSessionExist(true);
-        console.log('SESSION_JOINED', {data});
-
-        
         const gameStatus : IGameStatus = data.gameStatus;
         const players: IPlayer[] = data.players;
         const spectators : IBaseClient[] = data.spectators;
         
         if (!clientId) {
           const isCurrentClientSpectator = spectators.some(i=> i.clientId === data.clientId);
-          console.log({spectators}, isCurrentClientSpectator, data.clientId);
           setIsSpectator(isCurrentClientSpectator);
           setClientId(data.clientId);
         }
-       
-        
+
         setPlayers(players);
         setSpectators(spectators);
         setGameStatus(gameStatus);
         setSessionId(data.sessionId);
-        console.log({chatId});
-                   
         break;
 
       case 'SESSION_CREATED':
-        console.log(data);
-       
         setIsSessionExist(true);
         setPlayers(data.players);
         setClientId(data.clientId);
         setGameStatus(data.gameStatus);
-
         if (chatId) {
           tgService.sendGameInviteToChat('Test', chatId, data.sessionId);
         }
-        
         break;
       
       case 'SESSION_ERROR': 
@@ -69,22 +57,6 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       }
     }
   }, [lastMessage]);
-
-  // useEffect(() => {  
-  //   const userId = window.Telegram.WebApp.initDataUnsafe.user?.id || 73630328;
-  // },[]);
-
-  // useEffect(() => {  
-  //   console.log(lastMessage);
-  // },[lastMessage]);
-
-  // const onSendData = () => {
-  //   window.Telegram.WebApp.sendData(JSON.stringify({data: 'Some data'}));
-  // };
-
-  // const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   setMessage(e.currentTarget.value);
-  // };
 
   const getComponentInitComponent = () => {
     switch (isSessionExist) {
