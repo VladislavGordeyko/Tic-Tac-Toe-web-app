@@ -6,4 +6,5 @@ export interface IGame {
     players?: IPlayer[],
     gameStatusUpdate?: IGameStatus,
     clientId: string,
+    isSpectator?: boolean,
 }

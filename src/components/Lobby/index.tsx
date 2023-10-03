@@ -12,6 +12,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
   const [isSessionExist, setIsSessionExist] = useState<boolean | undefined>();
   const [sessionId, setSessionId] = useState(session);
   const [players, setPlayers] = useState<IPlayer[]>();
+  const [isSpectator, setIsSpectator] = useState<boolean | undefined>();
   const [clientId, setClientId] = useState('');
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
   const [spectators, setSpectators] = useState<IBaseClient[]>();
@@ -30,15 +31,14 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
         const gameStatus : IGameStatus = data.gameStatus;
         const players: IPlayer[] = data.players;
         const spectators : IBaseClient[] = data.spectators;
+        const isCurrentClientSpectator = spectators.some(i=> i.clientId === clientId);
+        setIsSpectator(isCurrentClientSpectator);
         
         setPlayers(players);
         setSpectators(spectators);
         setGameStatus(gameStatus);
         setSessionId(data.sessionId);
         console.log({chatId});
-        if (chatId) {
-          tgService.sendGameInviteToChat('Test', chatId, data.sessionId);
-        }
         if (!clientId) {
           setClientId(data.clientId);
         }
@@ -89,6 +89,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       gameStatusUpdate={gameStatus} 
       sessionId={sessionId} 
       players={players} 
+      isSpectator={isSpectator}
     />;
     case false : return <h1 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h1>;
     case undefined: return <Spinner />;

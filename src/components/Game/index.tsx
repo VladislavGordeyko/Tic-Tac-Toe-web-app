@@ -6,7 +6,7 @@ import { IGameStatus } from '@/entities/game';
 import { useWebSocketContext } from '@/context/WebSocketContext';
 import GameStatus from '../GameStatus';
 
-const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId }) => {
+const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId, isSpectator = false }) => {
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
   const { sendMessage, lastMessage } = useWebSocketContext();
 
@@ -22,12 +22,12 @@ const Game: React.FC<IGame> = ({ sessionId, players, gameStatusUpdate, clientId 
   };
 
   useEffect(() => {
-    if (gameStatus?.isFinished) {
+    if (gameStatus?.isFinished && !isSpectator) {
       window.Telegram.WebApp.MainButton.text = 'Restart Game';
       window.Telegram.WebApp.MainButton.show();
       window.Telegram.WebApp.MainButton.onClick(restartGame);
     }
-  }, [gameStatus?.isFinished]);
+  }, [gameStatus?.isFinished, isSpectator]);
 
   useEffect(() => {
     if (lastMessage) {
