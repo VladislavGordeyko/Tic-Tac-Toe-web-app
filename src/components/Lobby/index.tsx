@@ -34,8 +34,8 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
         const spectators : IBaseClient[] = data.spectators;
         
         if (!clientId) {
-          const isCurrentClientSpectator = spectators.some(i=> i.clientId === clientId);
-          console.log({spectators}, isCurrentClientSpectator, {clientId});
+          const isCurrentClientSpectator = spectators.some(i=> i.clientId === data.clientId);
+          console.log({spectators}, isCurrentClientSpectator, data.clientId);
           setIsSpectator(isCurrentClientSpectator);
           setClientId(data.clientId);
         }
