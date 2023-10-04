@@ -8,22 +8,33 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
   const playerCardComponent = (player: IPlayer) => {
     return <div className={styles['player-card']}>
       <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
-        {player.avatar !== '' ? 
-          <Image 
-            className={styles['player-image-container__image']} 
-            alt='player-avatar'
-            height={50}
-            width={50}
-            src={player.avatar}
-          /> 
-          : <div className={`${styles['player-image-container']} ${styles['player-image-container--mock']}`}>
+        {player.avatar !== '' ?
+          <>
             <Image 
+              className={styles['player-image-container__image']} 
+              alt='player-avatar'
+              height={50}
+              width={50}
+              src={player.avatar}
+            />
+            {player.score > 0 && <div className={styles['player-image-container__score']}>
+              {player.score}
+            </div>}
+            
+          </>
+          : <div 
+            className={`${styles['player-image-container']}  ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
+            <div className={`${styles['player-image-container--mock']}`}><Image 
               className={styles['player-image-container__image-mock']} 
               alt='player-avatar-mock'
               height={25}
               width={25}
               src='/assets/smile.svg'
             /> 
+            </div>
+            {player.score > 0 && <div className={styles['player-image-container__score']}>
+              {player.score}
+            </div>}
           </div> 
         } 
         
