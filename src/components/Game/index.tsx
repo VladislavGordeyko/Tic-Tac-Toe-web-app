@@ -47,6 +47,7 @@ const Game: React.FC<IGame> = ({
 
       case 'RESTART_GAME':
         setGameStatus(data.gameStatus);
+        onPlayersUpdate(data.players);
         window.Telegram.WebApp.MainButton.hide();
         break;
 
