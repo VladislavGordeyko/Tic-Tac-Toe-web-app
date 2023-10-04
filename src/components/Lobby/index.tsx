@@ -58,15 +58,15 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
     }
   }, [lastMessage]);
 
-  // const onBackHandle = () => {
-  //   onBack();
-  //   window.Telegram.WebApp.BackButton.hide();
-  // };
+  const onBackHandle = () => {
+    onBack();
+    window.Telegram.WebApp.BackButton.hide();
+  };
 
   useEffect(() => {
     if (!isSessionExist || error) {
       window.Telegram.WebApp.BackButton.show();
-      window.Telegram.WebApp.BackButton.onClick(onBack);
+      window.Telegram.WebApp.BackButton.onClick(onBackHandle);
     }
   }, [isSessionExist, error]);
 
