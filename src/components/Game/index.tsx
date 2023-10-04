@@ -42,9 +42,7 @@ const Game: React.FC<IGame> = ({
       switch (data.type) {
       case 'MOVE':
         setGameStatus(data.gameStatus);
-        if (data.gameStatus.winner) {
-          onPlayersUpdate(data.players);
-        }
+        onPlayersUpdate(data.players);
         break;
 
       case 'RESTART_GAME':
