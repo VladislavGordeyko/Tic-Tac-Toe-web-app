@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Board from '../Board';
 import { IGame } from './models';
-import { IGameStatus } from '@/entities/game';
+import { IGameStatus, IPlayer } from '@/entities/game';
 import { useWebSocketContext } from '@/context/WebSocketContext';
 import GameStatus from '../GameStatus';
 
@@ -11,7 +11,8 @@ const Game: React.FC<IGame> = ({
   players,
   gameStatusUpdate, 
   clientId, 
-  isSpectator = false
+  isSpectator = false,
+  onPlayersUpdate
 }) => {
   const [gameStatus, setGameStatus] = useState<IGameStatus>();
   const { sendMessage, lastMessage } = useWebSocketContext();
@@ -41,6 +42,9 @@ const Game: React.FC<IGame> = ({
       switch (data.type) {
       case 'MOVE':
         setGameStatus(data.gameStatus);
+        if (data.gameStatus.winner) {
+          onPlayersUpdate(data.players);
+        }
         break;
 
       case 'RESTART_GAME':

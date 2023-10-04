@@ -6,4 +6,5 @@ export interface IGame {
     gameStatusUpdate?: IGameStatus,
     clientId: string,
     isSpectator?: boolean,
+    onPlayersUpdate: (players: IPlayer[]) => void
 }

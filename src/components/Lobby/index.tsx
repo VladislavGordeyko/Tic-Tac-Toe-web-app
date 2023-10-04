@@ -76,6 +76,10 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
     }
   }, [isSessionExist, error]);
 
+  const handlePlayersUpdate = (players: IPlayer[]) => {
+    setPlayers(players);
+  };
+
   const getComponentInitComponent = () => {
     switch (isSessionExist) {
     case true: return <Game 
@@ -84,6 +88,7 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
       sessionId={sessionId} 
       players={players} 
       isSpectator={isSpectator}
+      onPlayersUpdate={handlePlayersUpdate}
     />;
     case false : return <h3 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h3>;
     case undefined: return <Spinner />;
