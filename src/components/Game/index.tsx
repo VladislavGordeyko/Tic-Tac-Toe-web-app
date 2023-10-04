@@ -17,6 +17,7 @@ const Game: React.FC<IGame> = ({
   const { sendMessage, lastMessage } = useWebSocketContext();
 
   useEffect(() => {
+    console.log({gameStatusUpdate});
     if (gameStatusUpdate) {
       setGameStatus(gameStatusUpdate);
     }
