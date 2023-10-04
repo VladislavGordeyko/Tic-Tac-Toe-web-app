@@ -20,7 +20,6 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
             {player.score > 0 && <div className={styles['player-image-container__score']}>
               {player.score}
             </div>}
-            
           </>
           : <div 
             className={`${styles['player-image-container']}  ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
