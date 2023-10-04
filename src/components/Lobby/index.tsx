@@ -57,6 +57,8 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
 
       case 'USER_DISCONNECTED': 
         setGameStatus(data.gameStatus);
+        setPlayers(data.players);
+        setSpectators(data.spectators);
         break;
       }
     }
