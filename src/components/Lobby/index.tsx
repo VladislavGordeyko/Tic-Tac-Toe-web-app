@@ -54,6 +54,10 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
       case 'SESSION_ERROR': 
         setIsSessionExist(false);
         break;
+
+      case 'USER_DISCONNECTED': 
+        setGameStatus(data.gameStatus);
+        break;
       }
     }
   }, [lastMessage]);
