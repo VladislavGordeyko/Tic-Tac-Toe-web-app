@@ -56,7 +56,6 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
         break;
 
       case 'USER_DISCONNECTED': 
-        console.log(data.gameStatus);
         setGameStatus(data.gameStatus);
         setPlayers(data.players);
         setSpectators(data.spectators);
@@ -71,9 +70,10 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
   };
 
   useEffect(() => {
+    console.log({isSessionExist});
     if (isSessionExist !== undefined && !isSessionExist || error) {
-      // window.Telegram.WebApp.BackButton.show();
-      // window.Telegram.WebApp.BackButton.onClick(onBackHandle);
+      window.Telegram.WebApp.BackButton.show();
+      window.Telegram.WebApp.BackButton.onClick(onBackHandle);
     }
   }, [isSessionExist, error]);
 
