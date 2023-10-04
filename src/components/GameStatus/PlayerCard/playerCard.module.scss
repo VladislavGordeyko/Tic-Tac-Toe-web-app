@@ -18,7 +18,7 @@
         position: relative;
 
         &--active {
-            outline: 2px solid var(--tg-theme-link-color, #49ACEA);
+            box-shadow: 0 0 0 2px var(--tg-theme-link-color, #49ACEA);
         }
     }
 
