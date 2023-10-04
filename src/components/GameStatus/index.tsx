@@ -14,7 +14,7 @@ const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClien
             alt='player-avatar'
             height={50}
             width={50}
-            src='https://api.telegram.org/file/bot6444342475%3AAAEg6SqB9UinVov-57cYFlVopcehQq62re8/photos/file_0.jpg'
+            src={player.avatar}
           /> 
           : <div className={`${styles['player-image-container']} ${styles['player-image-container--mock']}`}>
             <Image 
