@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 const GameStatus: React.FC<IPlayersLabel> = ({ players, status, currentMoveClientId }) => {
   const playerCardComponent = (player: IPlayer) => {
+    console.log('player score', player.score);
     return <div className={styles['player-card']}>
       <div className={`${styles['player-image-container']} ${player.clientId === currentMoveClientId && styles['player-image-container--active']}`}>
         {player.avatar !== '' ?
