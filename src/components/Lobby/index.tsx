@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ILobby } from './models';
 import Game from '../Game';
 import { useWebSocketContext } from '@/context/WebSocketContext';
-import { SESSIONNOTEXISTTEXT } from './constants';
+import { CONNECTIONERRORTEXT, SESSIONNOTEXISTTEXT } from './constants';
 import {  IBaseClient, IGameStatus, IPlayer } from '@/entities/game';
 import { TelegramService } from '@/services/TelegramService';
 import Spinner from '../Spinner';
 import styles from './lobby.module.scss';
 
-const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
+const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
   const [isSessionExist, setIsSessionExist] = useState<boolean | undefined>();
   const [sessionId, setSessionId] = useState(session);
   const [players, setPlayers] = useState<IPlayer[]>();
@@ -58,6 +58,18 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
     }
   }, [lastMessage]);
 
+  // const onBackHandle = () => {
+  //   onBack();
+  //   window.Telegram.WebApp.BackButton.hide();
+  // };
+
+  useEffect(() => {
+    if (!isSessionExist || error) {
+      window.Telegram.WebApp.BackButton.show();
+      window.Telegram.WebApp.BackButton.onClick(onBack);
+    }
+  }, [isSessionExist, error]);
+
   const getComponentInitComponent = () => {
     switch (isSessionExist) {
     case true: return <Game 
@@ -67,16 +79,21 @@ const Lobby: React.FC<ILobby> = ({ chatId, session }) => {
       players={players} 
       isSpectator={isSpectator}
     />;
-    case false : return <h1 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h1>;
+    case false : return <h3 className={styles['lobby__text']}>{SESSIONNOTEXISTTEXT}</h3>;
     case undefined: return <Spinner />;
     }
   };
 
   return (
     <>
-      {isLoading ? <Spinner /> : error ? <span>Connection Error</span> :  getComponentInitComponent()}
+      {isLoading ? 
+        <Spinner /> : error ? 
+          <h3 className={styles['lobby__text']}>
+            {CONNECTIONERRORTEXT}
+          </h3> 
+          : getComponentInitComponent()
+      }
     </>
-    
   );
 };
 

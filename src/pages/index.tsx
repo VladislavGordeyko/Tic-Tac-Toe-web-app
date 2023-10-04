@@ -27,12 +27,16 @@ const Home = () => {
     }
   }, []);
 
+  const onBack = () => {
+    setGameType('Unnasigned');
+  };
+
   const renderMainComponent = () => {
     switch (gameType) {
     case 'BOT': return <BOTGame />;
     case 'Player': return(
       <WebSocketProvider sessionId={session}>
-        <Lobby chatId={chatId} session={session} />
+        <Lobby chatId={chatId} session={session} onBack={onBack} />
       </WebSocketProvider>
     );
     default:

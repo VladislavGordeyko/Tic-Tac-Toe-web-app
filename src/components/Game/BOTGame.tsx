@@ -4,7 +4,7 @@ import Board from '../Board';
 import { SquareValue } from '../Square/models';
 import { bestMove, calculateWinner } from './utils';
 
-const BOTGame: React.FC = ({ }) => {
+const BOTGame: React.FC = () => {
   const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState<boolean>(true);
   const [winner, setWinner] = useState(calculateWinner(squares));
