@@ -70,7 +70,6 @@ const Lobby: React.FC<ILobby> = ({ chatId, session, onBack }) => {
   };
 
   useEffect(() => {
-    console.log({isSessionExist});
     if (isSessionExist !== undefined && !isSessionExist || error) {
       window.Telegram.WebApp.BackButton.show();
       window.Telegram.WebApp.BackButton.onClick(onBackHandle);
