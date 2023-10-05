@@ -17,7 +17,7 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
       onClick={onClick}
     >
       {value === 'X' && 
-      <svg ref={squareRef} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <svg ref={squareRef}  className={styles['square__container']} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         {/* topRightToCenter */}
         <line x1="90" y1="10" x2="50" y2="50" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
         {/* centerToBottomLeft */}
