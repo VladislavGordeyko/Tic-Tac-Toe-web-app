@@ -2,26 +2,30 @@ import { RefObject }from 'react';
 import { gsap } from 'gsap';
 import { SquareValue } from './models';
 
-export const animateXorO = (value:SquareValue, squareRef: RefObject<HTMLDivElement>, circleRef:RefObject<SVGCircleElement> ) => {
-  if (value === 'X' && squareRef.current) {
-    const tl = gsap.timeline();
-    tl
-      .fromTo(squareRef.current.children[0], 
-        { scaleX: 0 }, 
+export const animateXorO = (value:SquareValue, squareRef: RefObject<SVGCircleElement>, circleRef:RefObject<SVGCircleElement> ) => {
+  if (value === 'X' && squareRef.current ) {
+    const lineLength = Math.sqrt(42*42 + 40*40);
+
+    const animateLineFromCenter = (lineID:Element, number: number, delay?: number) => {
+      gsap.fromTo(lineID, 
         { 
-          scaleX: 1, 
-          duration: 0.5,  
-          ease: 'power2.in'
-        }
-      )
-      .fromTo(squareRef.current.children[1], 
-        { scaleX: 0 }, 
+          strokeDasharray: `${lineLength} ${lineLength}`,
+          strokeDashoffset: number * lineLength 
+        },
         { 
-          scaleX: 1, 
-          duration: 0.5,  
-          ease: 'power2.inOut' 
+          delay: delay,
+          strokeDashoffset: 0, 
+          duration: 1,
+          ease: 'power4.inOut'
         }
       );
+    };
+    animateLineFromCenter(squareRef.current.children[0], -1);
+    animateLineFromCenter(squareRef.current.children[1], 1);
+    animateLineFromCenter(squareRef.current.children[2], -1, 0.2);
+    animateLineFromCenter(squareRef.current.children[3], 1, 0.2);
+  
+
   } else if (value === 'O' && circleRef.current) {
     const circumference = 2 * Math.PI * 40;
     gsap.fromTo(circleRef.current, 

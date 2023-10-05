@@ -4,7 +4,7 @@ import { animateXorO } from './animations';
 import styles from './square.module.scss';
 
 const Square: React.FC<ISquare> = ({ value, onClick }) => {
-  const squareRef = useRef<HTMLDivElement>(null);
+  const squareRef = useRef(null);
   const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
@@ -17,13 +17,16 @@ const Square: React.FC<ISquare> = ({ value, onClick }) => {
       onClick={onClick}
     >
       {value === 'X' && 
-        <div 
-          ref={squareRef} 
-          className={styles['square__container']}
-        >
-          <div className={`${styles.line} ${styles.line1}`}/>
-          <div className={`${styles.line} ${styles.line2}`}/>
-        </div>
+      <svg ref={squareRef} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        {/* topRightToCenter */}
+        <line x1="90" y1="10" x2="50" y2="50" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
+        {/* centerToBottomLeft */}
+        <line x1="50" y1="50" x2="10" y2="90" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
+        {/* topLeftToCenter */}
+        <line x1="10" y1="10" x2="50" y2="50" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
+        {/* centerToBottomRight */}
+        <line x1="50" y1="50" x2="90" y2="90" stroke="var(--tg-theme-link-color, black)" strokeWidth="2" />
+      </svg>
       }
       {value === 'O' && 
           <svg className={styles.circle} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
