@@ -35,7 +35,7 @@ export const animateXorO = (value:SquareValue, squareRef: RefObject<SVGCircleEle
       },
       { 
         strokeDashoffset: 0, 
-        duration: 1,
+        duration: 1.2,
         ease: 'power4.inOut',
       }
     );
