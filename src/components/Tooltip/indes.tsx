@@ -14,7 +14,7 @@ const Tooltip: React.FC<ITooltip> = ({ message }) => {
 
     if (!isOpen) {
       tl.to(questionMarkRef.current, { opacity: 0, duration: .2})
-        .to(tooltipRef.current, { width: '100%', height: '40px', borderRadius: '5px', duration: 0.5 })
+        .to(tooltipRef.current, { width: '100%', height: '45px', borderRadius: '5px', duration: 0.5 })
         .to(messageRef.current, { opacity: 1, duration: 0.2 });
     } else {
       tl.to(messageRef.current, { opacity: 0, duration: .2 })
