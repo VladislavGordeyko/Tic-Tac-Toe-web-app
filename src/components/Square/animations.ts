@@ -10,6 +10,7 @@ export const animateXorO = (value:SquareValue, squareRef: RefObject<SVGCircleEle
       gsap.fromTo(lineID, 
         { 
           strokeDasharray: `${lineLength} ${lineLength}`,
+          opacity: 1,
           strokeDashoffset: number * lineLength 
         },
         { 
@@ -31,7 +32,8 @@ export const animateXorO = (value:SquareValue, squareRef: RefObject<SVGCircleEle
     gsap.fromTo(circleRef.current, 
       { 
         strokeDasharray: `${circumference} ${circumference}`,
-        strokeDashoffset: circumference 
+        strokeDashoffset: circumference,
+        opacity: 1,
       },
       { 
         strokeDashoffset: 0, 

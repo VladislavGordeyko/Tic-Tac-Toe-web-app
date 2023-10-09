@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Board from '../Board';
 import { SquareValue } from '../Square/models';
 import { bestMove, calculateWinner } from './utils';
+import GameStatus from '../GameStatus';
 
 const BOTGame: React.FC = () => {
   const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null));
@@ -26,7 +27,7 @@ const BOTGame: React.FC = () => {
     } else {
       setStatus(`Next player: ${isXNext ? 'X' : 'O'}`);
     }
-  }, [winner]);
+  }, [winner, squares]);
   
   useEffect(() => {
     setWinner(calculateWinner(squares));
@@ -62,7 +63,11 @@ const BOTGame: React.FC = () => {
   };
 
   return (
-    <Board squares={squares} onClick={handleClick} status={status || ''} />
+    <>
+      <GameStatus status={status} />
+      <Board squares={squares} onClick={handleClick} status={status || ''} />   
+    </>
+    
   );
 };
 

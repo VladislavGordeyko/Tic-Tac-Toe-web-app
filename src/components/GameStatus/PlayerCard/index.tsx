@@ -7,8 +7,8 @@ import styles from './playerCard.module.scss';
 const PlayerCard: React.FC<IPlayerCard> = ({ player }) => {
   return (
     <div className={styles['player-card']}>
-      <div className={`${styles['player-card__image-container']} ${player.isCurrentMove && styles['player-card__image-container--active']}`}>
-        {player.avatar ?  <Image
+      <div className={`${styles['player-card__image-container']} ${player?.isCurrentMove && styles['player-card__image-container--active']}`}>
+        {player?.avatar ?  <Image
           className={styles['player-card__image']} 
           alt='player-avatar'
           height={50}
@@ -25,11 +25,11 @@ const PlayerCard: React.FC<IPlayerCard> = ({ player }) => {
             />
           </div>
         }
-        {player.score > 0 && <div className={styles['player-card__score']}>
+        {player?.score > 0 && <div className={styles['player-card__score']}>
           {player.score}
         </div>}
       </div>   
-      <span className={styles['player-card__name']}>{player.userName}</span>
+      <span className={styles['player-card__name']}>{player?.userName}</span>
     </div>
   );
 };
