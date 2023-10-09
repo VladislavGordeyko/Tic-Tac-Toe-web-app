@@ -11,7 +11,7 @@ const Home = () => {
   const [session, setSession] = useState<string>();
   const [chatId, setChatId] = useState<string>();
   const [gameType, setGameType] = useState<GameType>('Unnasigned');
-  const [onlyAI, setOnlyAI] = useState(true);
+  const [onlyAI, setOnlyAI] = useState(false);
 
   useEffect(() => {  
     window.Telegram.WebApp.ready();
