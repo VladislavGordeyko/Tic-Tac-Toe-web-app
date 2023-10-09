@@ -5,11 +5,13 @@ import Lobby from '@/components/Lobby';
 import { GameType } from '@/entities/game';
 import BOTGame from '@/components/Game/BOTGame';
 import { WebSocketProvider } from '@/context/WebSocketContext';
+import Tooltip from '@/components/Tooltip/indes';
 
 const Home = () => {
   const [session, setSession] = useState<string>();
   const [chatId, setChatId] = useState<string>();
   const [gameType, setGameType] = useState<GameType>('Unnasigned');
+  const [onlyAI, setOnlyAI] = useState(true);
 
   useEffect(() => {  
     window.Telegram.WebApp.ready();
@@ -23,6 +25,8 @@ const Home = () => {
       } else if (data.includes('sessionId')) {
         setSession(data.split('__')[1]);
         setGameType('Player');
+      } else if (data.includes('onlyAI')) {
+        setOnlyAI(true);
       }
     }
   }, []);
@@ -43,7 +47,10 @@ const Home = () => {
     case 'Unnasigned': return <>
       <span className={styles['home__title']}>Tic Tac Toe</span>
       <div className={styles['home__buttons']}>
-        <Button onClick={() => setGameType('Player')} text='Play vs friend'/>
+        <div className={styles['home__play-vs-friends']}>
+          {onlyAI && <Tooltip message='You need to add the bot to the group and start from there to play against your friends.' />}
+          <Button onClick={() => setGameType('Player')} text='Play vs friend' disabled={onlyAI}/>
+        </div>
         <Button onClick={() => setGameType('BOT')} text='Play vs Bot'/>
       </div>
     </>;

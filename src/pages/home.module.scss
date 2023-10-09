@@ -23,4 +23,11 @@
         gap: 50px;
         flex: 1;
     }
+
+    &__play-vs-friends {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+   
 }
