@@ -16,7 +16,6 @@ const Home = () => {
   useEffect(() => {  
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    console.log('unsafe', window.Telegram.WebApp.initDataUnsafe);
 
     const data = window.Telegram.WebApp.initDataUnsafe.start_param  || 'chatId__-1001828521159';
     if (data) {
